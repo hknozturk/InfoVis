@@ -1,16 +1,14 @@
 ## Information Visualisation Project
 
-### Versions
+### Requirements
 
-- Python3: 3.6.9
-- Flask: 1.1.x
-- Plotly Dash: 1.11.0
+For requirements please check the [requirements.txt](./requirements.txt) file.
 
 ### How to run the project
 
-You can follow the installation of Flask from [here](https://flask.palletsprojects.com/en/1.1.x/)
+It is recommended to run the application in a dedicated virtual environment.
 
+- create a new virtual env in the project folder: `python3 -m venv venv`
 - activate virtual environment: `. venv/bin/activate`
-- add main project file to envrionment variables: `export FLASK_APP=app.py`
-- run the app: `flask run` or `python -m flask run`
-- if you want to run the project in development mode, before running the app set FLASK_ENV to development: `export FLASK_ENV=development`
+- install required python libraries: `pip install -r requirements.txt`
+- run the app: `python3 app.py`
