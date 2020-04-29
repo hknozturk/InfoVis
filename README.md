@@ -4,6 +4,7 @@
 
 - Python3: 3.6.9
 - Flask: 1.1.x
+- Plotly Dash: 1.11.0
 
 ### How to run the project
 
