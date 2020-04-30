@@ -1,3 +1,5 @@
+import os
+
 import flask
 import dash
 import dash_core_components as dcc
@@ -11,9 +13,9 @@ df = pd.read_csv(
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server,
-                external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+server = app.server
 
 app.layout = html.Div([
     html.Div([
