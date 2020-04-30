@@ -1,12 +1,13 @@
 import os
 
-import flask
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-
 import pandas as pd
+from map import PlotlyMap
+
+plotlyMap = PlotlyMap()
 
 df = pd.read_csv(
     'https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
@@ -21,6 +22,7 @@ app.layout = html.Div([
     html.Div([
         html.H3('Plotly Demos', style={'textAlign': 'center'})
     ]),
+    dcc.Graph(figure=plotlyMap.drawMap()),
     dcc.Graph(id='graph-with-slider'),
     dcc.Slider(
         id='year-slider',
