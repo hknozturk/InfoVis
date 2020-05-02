@@ -54,3 +54,10 @@ body {
 .card:last-child {
   grid-area: e;
 }
+
+.settingsLabel {
+  font-size: 14px;
+  color: darkslategray;
+  font-weight: 600;
+  padding-left: 20px;
+}

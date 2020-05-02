@@ -16,13 +16,27 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div([
-    html.Div([], className="card"),
-    html.Div([dcc.Graph(figure=plotlyMap.drawMap(),
-                        style={'width': '100%', 'height': '100%'})], className="card"),
-    html.Div([], className="card"),
-    html.Div([dcc.Graph(id='graph-with-slider', style={'width': '100%', 'height': '90%'}),
-              graphWithSlider.initSlider()], className="card"),
-    html.Div([], className="card")
+    html.Div([
+        html.H4('Additional Visualisations', style={'textAlign': 'center'})
+    ], className="card"),
+    html.Div([
+        dcc.Graph(figure=plotlyMap.drawMap(),
+                  style={'width': '100%', 'height': '100%'})
+    ], className="card"),
+    html.Div([
+        html.H4('Dashboard Parameter Settings', style={'textAlign': 'center'}),
+        html.Div([
+            html.Span('Year slider', className='settingsLabel'),
+            graphWithSlider.initSlider()
+        ])
+    ], className="card"),
+    html.Div([
+        dcc.Graph(id='graph-with-slider',
+                  style={'width': '100%', 'height': '100%'})
+    ], className="card"),
+    html.Div([
+
+    ], className="card")
 ], className="wrapper")
 
 
