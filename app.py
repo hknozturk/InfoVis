@@ -11,20 +11,19 @@ from graph_with_slider import GraphWithSlider
 plotlyMap = PlotlyMap()
 graphWithSlider = GraphWithSlider()
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 
 server = app.server
 
 app.layout = html.Div([
-    html.Div([
-        html.H3('Plotly Demos', style={'textAlign': 'center'})
-    ]),
-    dcc.Graph(figure=plotlyMap.drawMap()),
-    dcc.Graph(id='graph-with-slider'),
-    graphWithSlider.initSlider()
-])
+    html.Div([], className="card"),
+    html.Div([dcc.Graph(figure=plotlyMap.drawMap(),
+                        style={'width': '100%', 'height': '100%'})], className="card"),
+    html.Div([], className="card"),
+    html.Div([dcc.Graph(id='graph-with-slider', style={'width': '100%', 'height': '90%'}),
+              graphWithSlider.initSlider()], className="card"),
+    html.Div([], className="card")
+], className="wrapper")
 
 
 @app.callback(

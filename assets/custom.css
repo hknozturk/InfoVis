@@ -1,0 +1,56 @@
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.wrapper {
+  width: calc(100vw - 20px);
+  height: calc(100vh - 20px);
+  padding: 10px;
+  background-color: rgb(182, 182, 182);
+  display: grid;
+  grid-template-areas:
+    'a b b c'
+    'a b b c'
+    'a d d e';
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  font-size: 3rem;
+  color: #000;
+  box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem,
+    rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card:nth-child(1) {
+  grid-area: a;
+}
+
+.card:nth-child(2) {
+  grid-area: b;
+}
+
+.card:nth-child(3) {
+  grid-area: c;
+}
+
+.card:nth-child(4) {
+  grid-area: d;
+}
+
+.card:last-child {
+  grid-area: e;
+}
