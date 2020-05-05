@@ -6,6 +6,19 @@ body {
   margin: 0;
 }
 
+span {
+  font-size: 16px;
+}
+
+small {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+/*
+* Main view (app.py) style
+*/
+
 .wrapper {
   width: calc(100vw - 20px);
   height: calc(100vh - 20px);
@@ -85,4 +98,15 @@ body {
     color-stop(0.72, rgb(100, 100, 100)),
     color-stop(0.86, rgb(75, 75, 75))
   );
+}
+
+/*
+* Custom style for the list component
+*/
+
+.styled-list-item {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
