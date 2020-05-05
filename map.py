@@ -11,6 +11,7 @@ with open('config.json', 'r') as f:
     config_path = json.load(f)
     home_directory = config_path['home_directory']
 
+
 class PlotlyMap:
     def __init__(self):
         self.token = os.getenv('MAPBOX_PUBLIC_TOKEN')
@@ -18,7 +19,8 @@ class PlotlyMap:
             self.counties = json.load(response)
 
     def drawMap(self):
-        accident_df = pd.read_csv(home_directory + "FARS/National/FARS2018NationalCSV/ACCIDENT.csv")
+        accident_df = pd.read_csv(
+            home_directory + "FARS/National/FARS2018NationalCSV/ACCIDENT.csv")
         state_df = pd.read_csv(home_directory + 'state_names.csv', sep=';')
         deaths = accident_df.groupby(['STATE'])['FATALS'].sum()
         state_dict = state_df.set_index('Number')['Code'].to_dict()

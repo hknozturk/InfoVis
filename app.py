@@ -7,17 +7,24 @@ from dash.dependencies import Input, Output
 import pandas as pd
 from map import PlotlyMap
 from graph_with_slider import GraphWithSlider
+import custom_dash_index
+from components.list import List
 
 plotlyMap = PlotlyMap()
 graphWithSlider = GraphWithSlider()
+listComponent = List()
 
 app = dash.Dash(__name__)
+app.index_string = custom_dash_index.indexString
 
 server = app.server
 
 app.layout = html.Div([
     html.Div([
-        html.H4('Additional Visualisations', style={'textAlign': 'center'})
+        html.H4('Additional Visualisations', style={'textAlign': 'center'}),
+        html.Div([
+            listComponent.generateList()
+        ], className="scrollable", style={'margin': '4px'})
     ], className="card"),
     html.Div([
         dcc.Graph(figure=plotlyMap.drawMap(),
