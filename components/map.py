@@ -18,7 +18,7 @@ class PlotlyMap:
         with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
             self.counties = json.load(response)
 
-    def draw_map(self, selected_states):
+    def draw_map(self, selected_states=[]):
         if selected_states:
             return self.draw_counties_map(selected_states)
         deaths = self.get_states_data()

@@ -27,7 +27,7 @@ app.layout = html.Div([
         ], className="scrollable", style={'margin': '4px'})
     ], className="card"),
     html.Div([
-        dcc.Graph(figure=plotlyMap.draw_map([1, 2, 4]),
+        dcc.Graph(figure=plotlyMap.draw_map(),
                   style={'width': '100%', 'height': '100%'})
     ], className="card"),
     html.Div([
