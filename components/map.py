@@ -38,10 +38,12 @@ class PlotlyMap:
 
     def draw_counties_map(self, selected_states):
         filtered_df = self.get_selected_state_data(selected_states)
-        fips = (filtered_df['STATE'].astype(str) + filtered_df['COUNTY'].astype(str)).unique()
+        fips = (filtered_df['STATE'].astype(str) +
+                filtered_df['COUNTY'].astype(str)).unique()
         fig = go.Figure(
             go.Choropleth(geojson=self.counties, locations=fips,
-                          z=filtered_df.groupby(['STATE', 'COUNTY'])['FATALS'].sum(),
+                          z=filtered_df.groupby(['STATE', 'COUNTY'])[
+                              'FATALS'].sum(),
                           colorscale="Reds", zmin=0, zmax=50,
                           marker_opacity=0.5, marker_line_width=0))
         fig.update_layout(mapbox_style="carto-positron", geo_scope='usa',

@@ -44,6 +44,6 @@ class GraphWithSlider:
                 yaxis={'title': 'Life Expectancy', 'range': [20, 90]},
                 legend={'x': 0, 'y': 1},
                 hovermode='closest',
-                transition={'duration': 500},
+                transition={'duration': 500}
             )
         }
