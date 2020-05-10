@@ -65,11 +65,16 @@ app.layout = html.Div(id="app-layout", children=[
 
 @app.callback(
     Output('map', 'figure'),
-    [Input('year-range-slider', 'value')]
+    [Input('year-range-slider', 'value'),
+     Input('map', 'selectedData')]
 )
-def update_figure(selected_years):
+def update_figure(selected_years, selected_data):
     dataProcessing.filter_data(selected_years)
-    return plotlyMap.draw_map()
+    if selected_data is None:
+        return plotlyMap.draw_map()
+    else:
+        state_ids = plotlyMap.retrieve_selected_states(selected_data)
+        return plotlyMap.draw_map(state_ids)
 
 
 @app.callback(

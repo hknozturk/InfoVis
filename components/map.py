@@ -38,3 +38,21 @@ class PlotlyMap:
                           mapbox_zoom=3, mapbox_center={"lat": 37.0902, "lon": -95.7129})
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return fig
+
+    def retrieve_selected_states(self, selected_states):
+        """
+        return list of state id to update map figure.
+        :param selected_states: List of points that is selected on map.
+        """
+        selected_states_id = []
+        points = selected_states.get('points')
+        states = self.data.state_names_df
+
+        for point in points:
+            location = point.get('location')
+            state = states.loc[states['Code'] == location, 'Number']
+            state_id = state.to_numpy()[0]
+
+            selected_states_id.append(state_id)
+
+        return selected_states_id
