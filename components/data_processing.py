@@ -20,7 +20,8 @@ class DataProcessing:
         with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
             self.geojson = json.load(response)
 
-        self.state_names_df = self.states = pd.read_csv(home_directory + 'state_names.csv', sep=';')
+        self.state_names_df = self.states = pd.read_csv(
+            home_directory + 'state_names.csv', sep=';')
 
         # Warning accident_df has original copy of data don't change it
         # use filter_accident_df for showing and updating data.
@@ -42,7 +43,8 @@ class DataProcessing:
         :param selected_states: List of integers of selected states.
         """
 
-        filtered_df = self.filter_accident_df.loc[(self.filter_accident_df['STATE'].isin(selected_states))]
+        filtered_df = self.filter_accident_df.loc[(
+            self.filter_accident_df['STATE'].isin(selected_states))]
         filtered_df['STATE'] = filtered_df['STATE'].map("{:02}".format)
         filtered_df['COUNTY'] = filtered_df['COUNTY'].map("{:03}".format)
         return filtered_df
@@ -53,7 +55,8 @@ class DataProcessing:
         :param selected_years: List of years range from range slider.
         """
         years_list = list(range(selected_years[0], selected_years[1] + 1))
-        self.filter_accident_df = self.accident_df.loc[(self.accident_df['YEAR'].isin(years_list))]
+        self.filter_accident_df = self.accident_df.loc[(
+            self.accident_df['YEAR'].isin(years_list))]
 
     @staticmethod
     def read_accident_data(years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
@@ -63,7 +66,7 @@ class DataProcessing:
         """
         a_df = pd.DataFrame()
         for year in years:
-            path = home_directory + str(year) + "/ACCIDENT.csv"
+            path = home_directory + str(year) + "/ACCIDENT.CSV"
             temp_df = pd.read_csv(path)
             a_df = a_df.append(temp_df, ignore_index=True)
         return a_df
