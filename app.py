@@ -21,7 +21,7 @@ dataProcessing = DataProcessing()
 
 plotlyMap = PlotlyMap(dataProcessing)
 graphWithSlider = GraphWithSlider()
-listComponent = List()
+listComponent = List(dataProcessing)
 switchToggle = SwitchToggle()
 
 app = dash.Dash(__name__)
