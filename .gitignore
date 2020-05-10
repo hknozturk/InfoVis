@@ -131,3 +131,4 @@ dmypy.json
 # Personal Folder and Files
 /datasets
 .config.json
+/config.json
