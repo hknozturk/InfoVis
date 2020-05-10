@@ -51,6 +51,8 @@ small {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 10px;
+  transition: all 750ms !important;
+  transition-delay: 0 !important;
 }
 
 .card {
@@ -63,6 +65,8 @@ small {
     rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
   border-radius: 8px;
   overflow: hidden;
+  transition: all 750ms !important;
+  transition-delay: 0 !important;
 }
 
 .card:nth-child(1) {
