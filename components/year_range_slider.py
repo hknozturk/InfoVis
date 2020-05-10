@@ -8,7 +8,7 @@ class YearRangeSlider:
 
     def year_slider(self):
         return dcc.RangeSlider(
-            id='year-slider',
+            id='year-range-slider',
             min=self.data.accident_df['YEAR'].min(),
             max=self.data.accident_df['YEAR'].max(),
             value=[self.data.accident_df['YEAR'].min(), self.data.accident_df['YEAR'].max()],

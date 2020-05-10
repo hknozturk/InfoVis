@@ -45,6 +45,7 @@ app.layout = html.Div(id="app-layout", children=[
     ], className="card"),
     html.Div(id='card-2', children=[
         dcc.Graph(figure=plotlyMap.draw_map(),
+                  id='map',
                   style={'width': '100%', 'height': '100%'})
     ], className="card"),
     html.Div(id='card-3', children=[
@@ -64,12 +65,13 @@ app.layout = html.Div(id="app-layout", children=[
 ], className="wrapper")
 
 
-# @app.callback(
-#     Output('graph-with-slider', 'figure'),
-#     [Input('year-slider', 'value')]
-# )
-# def update_figure(selected_year):
-#     return graphWithSlider.update_figure(selected_year)
+@app.callback(
+    Output('map', 'figure'),
+    [Input('year-range-slider', 'value')]
+)
+def update_figure(selected_years):
+    dataProcessing.filter_data(selected_years)
+    return plotlyMap.draw_map()
 
 
 @app.callback(
