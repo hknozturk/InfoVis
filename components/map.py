@@ -1,15 +1,4 @@
-import os
-from urllib.request import urlopen
-import json
 import plotly.graph_objects as go
-import pandas as pd
-from dotenv import load_dotenv
-
-load_dotenv()
-
-with open('config.json', 'r') as f:
-    config_path = json.load(f)
-    home_directory = config_path['home_directory']
 
 
 class PlotlyMap:
