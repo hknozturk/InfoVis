@@ -21,7 +21,7 @@ class DataProcessing:
             self.geojson = json.load(response)
 
         self.state_names_df = self.states = pd.read_csv(home_directory + 'state_names.csv', sep=';')
-        self.accident_df = pd.read_csv(home_directory + "FARS/National/FARS2018NationalCSV/ACCIDENT.csv")
+        self.accident_df = self.read_accident_data()
 
     def get_states_data(self):
         """
@@ -42,3 +42,12 @@ class DataProcessing:
         filtered_df['STATE'] = filtered_df['STATE'].map("{:02}".format)
         filtered_df['COUNTY'] = filtered_df['COUNTY'].map("{:03}".format)
         return filtered_df
+
+    @staticmethod
+    def read_accident_data(years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+        a_df = pd.DataFrame()
+        for year in years:
+            path = home_directory + str(year) + "/ACCIDENT.csv"
+            temp_df = pd.read_csv(path)
+            a_df = a_df.append(temp_df, ignore_index=True)
+        return a_df
