@@ -1,11 +1,9 @@
 import os
 
 import dash
-import dash_daq as daq
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import pandas as pd
 from components.map import PlotlyMap
 from components.graph_with_slider import GraphWithSlider
 import custom_dash_index
