@@ -9,6 +9,7 @@ from components.graph_with_slider import GraphWithSlider
 import custom_dash_index
 from components.list import List
 from components.switch_toggle import SwitchToggle
+from components.year_range_slider import YearRangeSlider
 
 # importing data_processing module
 from components.data_processing import DataProcessing
@@ -18,6 +19,7 @@ from components.data_processing import DataProcessing
 dataProcessing = DataProcessing()
 
 plotlyMap = PlotlyMap(dataProcessing)
+yearSlider = YearRangeSlider(dataProcessing)
 graphWithSlider = GraphWithSlider()
 listComponent = List(dataProcessing)
 switchToggle = SwitchToggle()
@@ -49,7 +51,7 @@ app.layout = html.Div(id="app-layout", children=[
         html.H4('Dashboard Parameter Settings', style={'textAlign': 'center'}),
         html.Div([
             html.Span('Year slider'),
-            graphWithSlider.initSlider()
+            yearSlider.year_slider()
         ])
     ], className="card"),
     html.Div(id='card-4', children=[
@@ -62,12 +64,12 @@ app.layout = html.Div(id="app-layout", children=[
 ], className="wrapper")
 
 
-@app.callback(
-    Output('graph-with-slider', 'figure'),
-    [Input('year-slider', 'value')]
-)
-def update_figure(selected_year):
-    return graphWithSlider.update_figure(selected_year)
+# @app.callback(
+#     Output('graph-with-slider', 'figure'),
+#     [Input('year-slider', 'value')]
+# )
+# def update_figure(selected_year):
+#     return graphWithSlider.update_figure(selected_year)
 
 
 @app.callback(
