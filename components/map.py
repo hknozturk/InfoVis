@@ -13,15 +13,14 @@ with open('config.json', 'r') as f:
 
 
 class PlotlyMap:
-    def __init__(self):
-        self.token = os.getenv('MAPBOX_PUBLIC_TOKEN')
-        with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-            self.counties = json.load(response)
+
+    def __init__(self, data_processing):
+        self.data = data_processing
 
     def draw_map(self, selected_states=[]):
         if selected_states:
             return self.draw_counties_map(selected_states)
-        deaths = self.get_states_data()
+        deaths = self.data.get_states_data()
         fig = go.Figure(data=go.Choropleth(
             locations=deaths.index,  # Spatial coordinates
             z=deaths,  # Data to be color-coded
@@ -37,11 +36,11 @@ class PlotlyMap:
         return fig
 
     def draw_counties_map(self, selected_states):
-        filtered_df = self.get_selected_state_data(selected_states)
+        filtered_df = self.data.get_selected_state_data(selected_states)
         fips = (filtered_df['STATE'].astype(str) +
                 filtered_df['COUNTY'].astype(str)).unique()
         fig = go.Figure(
-            go.Choropleth(geojson=self.counties, locations=fips,
+            go.Choropleth(geojson=self.data.geojson, locations=fips,
                           z=filtered_df.groupby(['STATE', 'COUNTY'])[
                               'FATALS'].sum(),
                           colorscale="Reds", zmin=0, zmax=50,
@@ -50,22 +49,3 @@ class PlotlyMap:
                           mapbox_zoom=3, mapbox_center={"lat": 37.0902, "lon": -95.7129})
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return fig
-
-    def get_states_data(self):
-        accident_df = pd.read_csv(
-            home_directory + "FARS/National/FARS2018NationalCSV/ACCIDENT.csv")
-        map_df = pd.read_csv(home_directory + 'state_names.csv', sep=';')
-        deaths = accident_df.groupby(['STATE'])['FATALS'].sum()
-        d = map_df.set_index('Number')['Code'].to_dict()
-        deaths.index = deaths.index.map(d)
-
-        return deaths
-
-    def get_selected_state_data(self, selected_states):
-        accident_df = pd.read_csv(
-            home_directory + "FARS/National/FARS2018NationalCSV/ACCIDENT.csv")
-        filtered_df = accident_df.loc[
-            (accident_df['STATE'].isin(selected_states))]
-        filtered_df['STATE'] = filtered_df['STATE'].map("{:02}".format)
-        filtered_df['COUNTY'] = filtered_df['COUNTY'].map("{:03}".format)
-        return filtered_df

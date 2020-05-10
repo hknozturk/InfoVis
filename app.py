@@ -12,7 +12,14 @@ import custom_dash_index
 from components.list import List
 from components.switch_toggle import SwitchToggle
 
-plotlyMap = PlotlyMap()
+# importing data_processing module
+from components.data_processing import DataProcessing
+
+# dataProcessing object has all methods related data pre processing
+# We can pass dataProcessing object to other components to get the data.
+dataProcessing = DataProcessing()
+
+plotlyMap = PlotlyMap(dataProcessing)
 graphWithSlider = GraphWithSlider()
 listComponent = List()
 switchToggle = SwitchToggle()
