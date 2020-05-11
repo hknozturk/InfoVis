@@ -73,8 +73,9 @@ class DataProcessing:
         returns ordered filter_accident_df to populate list_items (list component)
         """
         states = self.state_names_df.copy().set_index(['Number'])
-        states['Total Death'] = self.filter_accident_df.groupby(['STATE'])[
-            'FATALS'].sum()
+        grouped_states = self.filter_accident_df.groupby(['STATE'])
+        states['Total Death'] = grouped_states['FATALS'].sum()
+        states['Avg Cars Involved'] = grouped_states['VE_TOTAL'].mean()
 
         return states.sort_values(by=['Total Death'], ascending=False)
 
