@@ -64,8 +64,20 @@ class DataProcessing:
         """
         timeline_df = pd.DataFrame()
         timeline_df['ACCIDENT'] = self.filter_accident_df['YEAR'].value_counts()
-        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])['FATALS'].sum()
+        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])[
+            'FATALS'].sum()
         return timeline_df
+
+    def get_accident_data_ordered_by_states(self):
+        """
+        returns ordered filter_accident_df to populate list_items (list component)
+        """
+        states = self.state_names_df.copy().set_index(['Number'])
+        grouped_states = self.filter_accident_df.groupby(['STATE'])
+        states['Total Death'] = grouped_states['FATALS'].sum()
+        states['Avg Cars Involved'] = grouped_states['VE_TOTAL'].mean()
+
+        return states.sort_values(by=['Total Death'], ascending=False)
 
     @staticmethod
     def read_accident_data(years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):

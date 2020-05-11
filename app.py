@@ -40,8 +40,9 @@ app.layout = html.Div(id="app-layout", children=[
     html.Div(id='card-1', children=[
         switchToggle.generateToggle(),
         html.Div([
-            listComponent.generateList()
-        ], className="scrollable", style={'margin': '4px'})
+            html.Span('Year slider'),
+            yearSlider.year_slider()
+        ])
     ], className="card"),
     html.Div(id='card-2', children=[
         dcc.Graph(figure=plotlyMap.draw_map(),
@@ -49,11 +50,9 @@ app.layout = html.Div(id="app-layout", children=[
                   style={'width': '100%', 'height': '100%'})
     ], className="card"),
     html.Div(id='card-3', children=[
-        html.H4('Dashboard Parameter Settings', style={'textAlign': 'center'}),
         html.Div([
-            html.Span('Year slider'),
-            yearSlider.year_slider()
-        ])
+            listComponent.generateList()
+        ], className="scrollable", style={'margin': '4px'})
     ], className="card"),
     html.Div(id='card-4', children=[
         dcc.Graph(figure=barPlot.timeline_bar_plot(),
