@@ -10,8 +10,12 @@ class ListItem:
         for index, row in self.data.get_accident_data_ordered_by_states().iterrows():
             self.list.append(html.Li([
                 html.Div([
-                    html.Span([row['Name']], className="grid-cell"),
-                    html.Small([row['Code']], className="grid-cell"),
+                    html.Div([
+                        html.Img(src="./assets/flags/" +
+                                 row['Code'].lower()+".svg", className="state-flag"),
+                        html.Span([row['Code']])
+                    ], className="grid-cell"),
+                    html.Small([row['Name']], className="grid-cell"),
                     html.Div([
                         html.Img(title="Total number of deaths", src="./assets/icons/cemetery.svg",
                                  className="list-item-icon")
