@@ -8,6 +8,7 @@ import custom_dash_index
 from components.list import List
 from components.switch_toggle import SwitchToggle
 from components.year_range_slider import YearRangeSlider
+from components.bar_plot import BarPlot
 
 # importing data_processing module
 from components.data_processing import DataProcessing
@@ -18,6 +19,7 @@ dataProcessing = DataProcessing()
 
 plotlyMap = PlotlyMap(dataProcessing)
 yearSlider = YearRangeSlider(dataProcessing)
+barPlot = BarPlot(dataProcessing)
 graphWithSlider = GraphWithSlider()
 listComponent = List(dataProcessing)
 switchToggle = SwitchToggle()
@@ -54,7 +56,8 @@ app.layout = html.Div(id="app-layout", children=[
         ])
     ], className="card"),
     html.Div(id='card-4', children=[
-        dcc.Graph(id='graph-with-slider',
+        dcc.Graph(figure=barPlot.timeline_bar_plot(),
+                  id='timeline_bar_plot',
                   style={'width': '100%', 'height': '100%'})
     ], className="card"),
     html.Div(id='card-5', children=[

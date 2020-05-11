@@ -58,6 +58,15 @@ class DataProcessing:
         self.filter_accident_df = self.accident_df.loc[(
             self.accident_df['YEAR'].isin(years_list))]
 
+    def get_years_timeline(self):
+        """
+        returning accident and fatals years timeline.
+        """
+        timeline_df = pd.DataFrame()
+        timeline_df['ACCIDENT'] = self.filter_accident_df['YEAR'].value_counts()
+        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])['FATALS'].sum()
+        return timeline_df
+
     @staticmethod
     def read_accident_data(years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         """
