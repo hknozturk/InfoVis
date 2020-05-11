@@ -20,6 +20,7 @@ class PlotlyMap:
 
         fig.update_layout(
             geo_scope='usa',  # limite map scope to USA
+            clickmode="event+select"
         )
 
         return fig
@@ -34,8 +35,12 @@ class PlotlyMap:
                               'FATALS'].sum(),
                           colorscale="Reds", zmin=0, zmax=50,
                           marker_opacity=0.5, marker_line_width=0))
-        fig.update_layout(mapbox_style="carto-positron", geo_scope='usa',
-                          mapbox_zoom=3, mapbox_center={"lat": 37.0902, "lon": -95.7129})
+        fig.update_layout(mapbox_style="carto-positron",
+                          geo_scope='usa',
+                          mapbox_zoom=3,
+                          mapbox_center={"lat": 37.0902, "lon": -95.7129},
+                          clickmode="event+select"
+                          )
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return fig
 
@@ -51,8 +56,9 @@ class PlotlyMap:
         for point in points:
             location = point.get('location')
             state = states.loc[states['Code'] == location, 'Number']
-            state_id = state.to_numpy()[0]
 
-            selected_states_id.append(state_id)
+            if len(state.to_numpy()) > 0:
+                state_id = state.to_numpy()[0]
+                selected_states_id.append(state_id)
 
         return selected_states_id
