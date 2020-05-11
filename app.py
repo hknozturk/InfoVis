@@ -9,6 +9,7 @@ from components.list import List
 from components.switch_toggle import SwitchToggle
 from components.year_range_slider import YearRangeSlider
 from components.bar_plot import BarPlot
+from components.sunburst import SunburstChart
 
 # importing data_processing module
 from components.data_processing import DataProcessing
@@ -23,6 +24,7 @@ barPlot = BarPlot(dataProcessing)
 graphWithSlider = GraphWithSlider()
 listComponent = List(dataProcessing)
 switchToggle = SwitchToggle()
+sunBurst = SunburstChart()
 
 app = dash.Dash(__name__)
 app.index_string = custom_dash_index.indexString
@@ -60,7 +62,9 @@ app.layout = html.Div(id="app-layout", children=[
                   style={'width': '100%', 'height': '100%'})
     ], className="card"),
     html.Div(id='card-5', children=[
-
+        dcc.Graph(figure=sunBurst.draw_pie(),
+                  id='sunburst',
+                  style={'width': '100%', 'height': '100%'})
     ], className="card")
 ], className="wrapper")
 
