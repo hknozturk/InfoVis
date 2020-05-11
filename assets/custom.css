@@ -32,7 +32,7 @@ span {
 }
 
 small {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /*
@@ -169,4 +169,9 @@ small {
   width: 32px;
   filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(200deg)
     brightness(118%) contrast(119%);
+}
+
+.state-flag {
+  width: 32px;
+  margin-right: 4px;
 }
