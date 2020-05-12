@@ -74,10 +74,13 @@ class DataProcessing:
         """
         states = self.state_names_df.copy().set_index(['Number'])
         grouped_states = self.filter_accident_df.groupby(['STATE'])
-        states['Total Death'] = grouped_states['FATALS'].sum()
-        states['Avg Cars Involved'] = grouped_states['VE_TOTAL'].mean()
+        states['NumberOfAccidents'] = grouped_states.size()
+        states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
+        states['AvgVehicleInvolved'] = grouped_states['VE_TOTAL'].mean()
 
-        return states.sort_values(by=['Total Death'], ascending=False)
+        states.fillna(0, inplace=True)
+
+        return states.sort_values(by=['NumberOfDeaths'], ascending=False)
 
     @staticmethod
     def read_accident_data(years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
