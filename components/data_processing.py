@@ -75,8 +75,8 @@ class DataProcessing:
         """
         timeline_df = pd.DataFrame()
         timeline_df['ACCIDENT'] = self.filter_accident_df['YEAR'].value_counts()
-        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])[
-            'FATALS'].sum()
+        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])['FATALS'].sum()
+        timeline_df['PERSONS'] = self.filter_person_df['YEAR'].value_counts()
         return timeline_df
 
     def get_accident_data_ordered_by_states(self):

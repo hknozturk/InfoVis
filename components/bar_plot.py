@@ -9,7 +9,8 @@ class BarPlot:
     def timeline_bar_plot(self):
         timeline_df = self.data.get_years_timeline()
         fig = go.Figure(data=[
-            go.Bar(name='Accidents', x=timeline_df.index, y=timeline_df['ACCIDENT']),
-            go.Bar(name='Fatals', x=timeline_df.index, y=timeline_df['FATALS'])
+            go.Bar(name='Accidents', x=timeline_df.index, y=timeline_df['ACCIDENT'], marker_color='rgb(98,109,250)'),
+            go.Bar(name='Persons', x=timeline_df.index, y=timeline_df['PERSONS'], marker_color='rgb(5,204,150)'),
+            go.Bar(name='Fatals', x=timeline_df.index, y=timeline_df['FATALS'], marker_color='rgb(239,84,59)')
         ])
         return fig
