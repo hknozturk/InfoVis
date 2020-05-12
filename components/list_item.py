@@ -17,14 +17,20 @@ class ListItem:
                     ], className="grid-cell"),
                     html.Small([row['Name']], className="grid-cell"),
                     html.Div([
+                        html.Img(title="Total number of accidents", src="./assets/icons/transport.svg",
+                                 className="list-item-icon")
+                    ], className='grid-cell'),
+                    html.Span([str(int(row['NumberOfAccidents']))],
+                              className="grid-cell"),
+                    html.Div([
                         html.Img(title="Total number of deaths", src="./assets/icons/cemetery.svg",
                                  className="list-item-icon")
                     ], className='grid-cell'),
-                    html.Span(['Total: ' + str(row['Total Death'])],
-                              className="grid-cell"),
-                    html.Div([html.Img(title="Average number of vehicle involved", src="./assets/icons/transport.svg",
+                    html.Span([str(int(row['NumberOfDeaths']))],
+                              className="grid-cell", style={'font-weight': '600'}),
+                    html.Div([html.Img(title="Average number of vehicles involved", src="./assets/icons/car.svg",
                                        className="list-item-icon")], className='grid-cell'),
-                    html.Span(['Avg: ' + str(round(row['Avg Cars Involved'], 2))],
+                    html.Span([str(round(row['AvgVehicleInvolved'], 2))],
                               className="grid-cell")
                 ], className="list-item")
             ], className="styled-list-item"))
