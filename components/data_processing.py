@@ -28,6 +28,16 @@ class DataProcessing:
         self.accident_df = self.read_data('ACCIDENT')
         self.filter_accident_df = self.accident_df
 
+        # Warning person_df has original copy of data don't change it
+        # use filter_person_df for showing and updating data.
+        self.person_df = self.read_data('PERSON')
+        self.filter_person_df = self.person_df
+
+        # Warning vehicle_df has original copy of data don't change it
+        # use filter_vehicle_df for showing and updating data.
+        self.vehicle_df = self.read_data('VEHICLE')
+        self.filter_vehicle_df = self.vehicle_df
+
     def get_states_data(self):
         """
         get the number of fatalities per state for all us states.
@@ -56,6 +66,8 @@ class DataProcessing:
         """
         years_list = list(range(selected_years[0], selected_years[1] + 1))
         self.filter_accident_df = self.accident_df.loc[(self.accident_df['YEAR'].isin(years_list))]
+        self.filter_person_df = self.person_df.loc[(self.person_df['YEAR'].isin(years_list))]
+        self.filter_vehicle_df = self.vehicle_df.loc[(self.vehicle_df['YEAR'].isin(years_list))]
 
     def get_years_timeline(self):
         """
@@ -91,6 +103,8 @@ class DataProcessing:
         a_df = pd.DataFrame()
         for year in years:
             path = home_directory + str(year) + "/" + file_name + ".CSV"
-            temp_df = pd.read_csv(path)
+            temp_df = pd.read_csv(path, encoding='iso-8859-1')
+            if 'YEAR' not in temp_df.columns:
+                temp_df['YEAR'] = year
             a_df = a_df.append(temp_df, ignore_index=True)
         return a_df
