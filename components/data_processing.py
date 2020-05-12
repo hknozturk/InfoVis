@@ -25,7 +25,7 @@ class DataProcessing:
 
         # Warning accident_df has original copy of data don't change it
         # use filter_accident_df for showing and updating data.
-        self.accident_df = self.read_accident_data()
+        self.accident_df = self.read_data('ACCIDENT')
         self.filter_accident_df = self.accident_df
 
     def get_states_data(self):
@@ -55,8 +55,7 @@ class DataProcessing:
         :param selected_years: List of years range from range slider.
         """
         years_list = list(range(selected_years[0], selected_years[1] + 1))
-        self.filter_accident_df = self.accident_df.loc[(
-            self.accident_df['YEAR'].isin(years_list))]
+        self.filter_accident_df = self.accident_df.loc[(self.accident_df['YEAR'].isin(years_list))]
 
     def get_years_timeline(self):
         """
@@ -83,14 +82,15 @@ class DataProcessing:
         return states.sort_values(by=['NumberOfDeaths'], ascending=False)
 
     @staticmethod
-    def read_accident_data(years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+    def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         """
-        reading local data in years list
+        reading data from local storage for years in years list.
         :param years: List of years to read from local file system.
+        :param file_name: String of the file to read from local storage.
         """
         a_df = pd.DataFrame()
         for year in years:
-            path = home_directory + str(year) + "/ACCIDENT.CSV"
+            path = home_directory + str(year) + "/" + file_name + ".CSV"
             temp_df = pd.read_csv(path)
             a_df = a_df.append(temp_df, ignore_index=True)
         return a_df
