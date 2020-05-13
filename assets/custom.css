@@ -130,6 +130,8 @@ small {
     'f f g h i'
     'f f g h i'
     'j j k l m';
+  padding-bottom: 10px;
+  padding-left: 10px;
 }
 
 .grid-cell {

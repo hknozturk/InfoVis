@@ -15,7 +15,8 @@ class ListItem:
                                  row['Code'].lower()+".svg", className="state-flag"),
                         html.Span([row['Code']])
                     ], className="grid-cell"),
-                    html.Small([row['Name']], className="grid-cell"),
+                    html.Span([row['Name']], className="grid-cell",
+                              style={'font-weight': '600'}),
                     html.Div([
                         html.Img(title="Total number of accidents", src="./assets/icons/transport.svg",
                                  className="list-item-icon")
@@ -28,9 +29,9 @@ class ListItem:
                     ], className='grid-cell'),
                     html.Span([str(int(row['NumberOfDeaths']))],
                               className="grid-cell", style={'font-weight': '600'}),
-                    html.Div([html.Img(title="Average number of vehicles involved", src="./assets/icons/car.svg",
+                    html.Div([html.Img(title="Average arrival time of EMP to accidents", src="./assets/icons/arr_scene.svg",
                                        className="list-item-icon")], className='grid-cell'),
-                    html.Span([str(round(row['AvgVehicleInvolved'], 2))],
+                    html.Span([str(round(row['AvgArrivalTime'], 2)) + ' min'],
                               className="grid-cell")
                 ], className="list-item")
             ], className="styled-list-item"))
