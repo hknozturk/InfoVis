@@ -65,9 +65,12 @@ class DataProcessing:
         :param selected_years: List of years range from range slider.
         """
         years_list = list(range(selected_years[0], selected_years[1] + 1))
-        self.filter_accident_df = self.accident_df.loc[(self.accident_df['YEAR'].isin(years_list))]
-        self.filter_person_df = self.person_df.loc[(self.person_df['YEAR'].isin(years_list))]
-        self.filter_vehicle_df = self.vehicle_df.loc[(self.vehicle_df['YEAR'].isin(years_list))]
+        self.filter_accident_df = self.accident_df.loc[(
+            self.accident_df['YEAR'].isin(years_list))]
+        self.filter_person_df = self.person_df.loc[(
+            self.person_df['YEAR'].isin(years_list))]
+        self.filter_vehicle_df = self.vehicle_df.loc[(
+            self.vehicle_df['YEAR'].isin(years_list))]
 
     def get_years_timeline(self):
         """
@@ -75,7 +78,8 @@ class DataProcessing:
         """
         timeline_df = pd.DataFrame()
         timeline_df['ACCIDENT'] = self.filter_accident_df['YEAR'].value_counts()
-        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])['FATALS'].sum()
+        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])[
+            'FATALS'].sum()
         timeline_df['PERSONS'] = self.filter_person_df['YEAR'].value_counts()
         return timeline_df
 
@@ -87,11 +91,35 @@ class DataProcessing:
         grouped_states = self.filter_accident_df.groupby(['STATE'])
         states['NumberOfAccidents'] = grouped_states.size()
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
-        states['AvgVehicleInvolved'] = grouped_states['VE_TOTAL'].mean()
-
+        states['AvgArrivalTime'] = self.calculate_arrival_times(
+            self.filter_accident_df)
         states.fillna(0, inplace=True)
 
         return states.sort_values(by=['NumberOfDeaths'], ascending=False)
+
+    @staticmethod
+    def calculate_arrival_times(dataFrame):
+        """
+        this static method calculates average arrival times of EMP to scene and to hospital.
+        :param hour: dataframe that grouped by states.
+        """
+        hour_range = range(0, 23)
+        min_range = range(0, 59)
+
+        filter_times = dataFrame[(dataFrame['NOT_MIN'].isin(min_range)) &
+                                 (dataFrame['NOT_HOUR'].isin(hour_range)) &
+                                 (dataFrame['ARR_MIN'].isin(min_range)) &
+                                 (dataFrame['ARR_HOUR'].isin(hour_range))
+                                 ]
+
+        filter_times.loc[(filter_times['NOT_HOUR'] >
+                          filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
+
+        filter_times['AVG_ARR_TIME'] = (
+            filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+
+        grouped_by_states = filter_times.groupby(['STATE'])
+        return grouped_by_states['AVG_ARR_TIME'].mean()
 
     @staticmethod
     def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
