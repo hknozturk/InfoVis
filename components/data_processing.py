@@ -92,7 +92,7 @@ class DataProcessing:
         grouped_states = self.filter_accident_df.groupby(['STATE'])
         states['NumberOfAccidents'] = grouped_states.size()
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
-        states['AvgArrivalTime'] = self.calculate_arrival_times()
+        states['AvgArrivalTime'] = grouped_states['RESPONSE_TIME'].mean()
         states.fillna(0, inplace=True)
 
         return states.sort_values(by=['NumberOfDeaths'], ascending=False)
@@ -119,8 +119,6 @@ class DataProcessing:
 
         # grouped_by_states = self.filter_accident_df.groupby(['STATE'])['RESPONSE_TIME'].mean()
         # return grouped_by_states['AVG_ARR_TIME'].mean()
-        self.filter_accident_df['RESPONSE_TIME']
-        return self.filter_accident_df.groupby(['STATE'])['RESPONSE_TIME'].mean()
 
     @staticmethod
     def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
@@ -158,8 +156,35 @@ class DataProcessing:
                           filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
 
         filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
-                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+            filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
         dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
+        path = home_directory + str(year) + "/" + file_name + "_n.CSV"
+        dataFrame.to_csv(path)
+
+    @staticmethod
+    def calculate_hospital_arrival_times(dataFrame, file_name, year):
+        """
+        this static method calculates time taken to arrive hospital from accident scene.
+        It is a separate method from calculate_response_times because, not recorded times for notification and hospital arrival might affect each other.
+        """
+        dataFrame['HOSP_ARR_TIME'] = 0
+        hour_range = range(0, 23)
+        min_range = range(0, 59)
+
+        filter_times = dataFrame[
+            (dataFrame['ARR_MIN'].isin(min_range)) &
+            (dataFrame['ARR_HOUR'].isin(hour_range)) &
+            (dataFrame['HOSP_MN'].isin(min_range)) &
+            (dataFrame['HOSP_HR'].isin(hour_range))
+        ]
+
+        filter_times.loc[(filter_times['ARR_HOUR'] >
+                          filter_times['HOSP_HR']), 'HOSP_HR'] = 24
+
+        filter_times['HOSP_ARR_TIME'] = (filter_times['HOSP_HR'] - filter_times['ARR_HOUR']) * 60 + (
+            filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
+
+        dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
         dataFrame.to_csv(path)
