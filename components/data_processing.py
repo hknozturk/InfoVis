@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 from urllib.request import urlopen
+import numpy as np
 
 # reading config json file.
 with open('config.json', 'r') as f:
@@ -25,7 +26,7 @@ class DataProcessing:
 
         # Warning accident_df has original copy of data don't change it
         # use filter_accident_df for showing and updating data.
-        self.accident_df = self.read_data('ACCIDENT')
+        self.accident_df = self.read_data('ACCIDENT_n')
         self.filter_accident_df = self.accident_df
 
         # Warning person_df has original copy of data don't change it
@@ -91,35 +92,35 @@ class DataProcessing:
         grouped_states = self.filter_accident_df.groupby(['STATE'])
         states['NumberOfAccidents'] = grouped_states.size()
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
-        states['AvgArrivalTime'] = self.calculate_arrival_times(
-            self.filter_accident_df)
+        states['AvgArrivalTime'] = self.calculate_arrival_times()
         states.fillna(0, inplace=True)
 
         return states.sort_values(by=['NumberOfDeaths'], ascending=False)
 
-    @staticmethod
-    def calculate_arrival_times(dataFrame):
+    def calculate_arrival_times(self):
         """
         this static method calculates average arrival times of EMP to scene and to hospital.
         :param hour: dataframe that grouped by states.
         """
-        hour_range = range(0, 23)
-        min_range = range(0, 59)
+        # hour_range = range(0, 23)
+        # min_range = range(0, 59)
+        #
+        # filter_times = dataFrame[(dataFrame['NOT_MIN'].isin(min_range)) &
+        #                          (dataFrame['NOT_HOUR'].isin(hour_range)) &
+        #                          (dataFrame['ARR_MIN'].isin(min_range)) &
+        #                          (dataFrame['ARR_HOUR'].isin(hour_range))
+        #                          ]
+        #
+        # filter_times.loc[(filter_times['NOT_HOUR'] >
+        #                   filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
+        #
+        # filter_times['AVG_ARR_TIME'] = (
+        #     filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
-        filter_times = dataFrame[(dataFrame['NOT_MIN'].isin(min_range)) &
-                                 (dataFrame['NOT_HOUR'].isin(hour_range)) &
-                                 (dataFrame['ARR_MIN'].isin(min_range)) &
-                                 (dataFrame['ARR_HOUR'].isin(hour_range))
-                                 ]
-
-        filter_times.loc[(filter_times['NOT_HOUR'] >
-                          filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
-
-        filter_times['AVG_ARR_TIME'] = (
-            filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
-
-        grouped_by_states = filter_times.groupby(['STATE'])
-        return grouped_by_states['AVG_ARR_TIME'].mean()
+        # grouped_by_states = self.filter_accident_df.groupby(['STATE'])['RESPONSE_TIME'].mean()
+        # return grouped_by_states['AVG_ARR_TIME'].mean()
+        self.filter_accident_df['RESPONSE_TIME']
+        return self.filter_accident_df.groupby(['STATE'])['RESPONSE_TIME'].mean()
 
     @staticmethod
     def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
@@ -136,3 +137,29 @@ class DataProcessing:
                 temp_df['YEAR'] = year
             a_df = a_df.append(temp_df, ignore_index=True)
         return a_df
+
+    @staticmethod
+    def calculate_response_times(dataFrame, file_name, year):
+        """
+        this static method calculates average arrival times of EMP to scene and to hospital.
+        :param hour: dataframe that grouped by states.
+        """
+        dataFrame['RESPONSE_TIME'] = 0
+        hour_range = range(0, 23)
+        min_range = range(0, 59)
+
+        filter_times = dataFrame[(dataFrame['NOT_MIN'].isin(min_range)) &
+                                 (dataFrame['NOT_HOUR'].isin(hour_range)) &
+                                 (dataFrame['ARR_MIN'].isin(min_range)) &
+                                 (dataFrame['ARR_HOUR'].isin(hour_range))
+                                 ]
+
+        filter_times.loc[(filter_times['NOT_HOUR'] >
+                          filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
+
+        filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
+                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+
+        dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
+        path = home_directory + str(year) + "/" + file_name + "_n.CSV"
+        dataFrame.to_csv(path)
