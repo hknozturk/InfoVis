@@ -68,6 +68,10 @@ class DataProcessing:
             'FATALS'].sum()
         return timeline_df
 
+    # def get_weather_info(self):
+    #     weather_df = self.filter_accident_df['']
+    #     return weather_df
+
     def get_accident_data_ordered_by_states(self):
         """
         returns ordered filter_accident_df to populate list_items (list component)
