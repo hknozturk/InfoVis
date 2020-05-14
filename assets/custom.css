@@ -29,6 +29,7 @@ body {
 
 span {
   font-size: 16px;
+  line-height: 1;
 }
 
 small {
@@ -124,12 +125,12 @@ small {
 
 .list-item {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-areas:
-    'f f g h i'
-    'f f g h i'
-    'j j k l m';
+    'f f g h i n'
+    'f f g h i n'
+    'j j k l m o';
   padding-bottom: 10px;
   padding-left: 10px;
 }
@@ -169,9 +170,16 @@ small {
   grid-area: i;
   justify-content: center;
 }
-
-.grid-cell:last-child {
+.grid-cell:nth-child(8) {
   grid-area: m;
+  justify-content: center;
+}
+.grid-cell:nth-child(9) {
+  grid-area: n;
+  justify-content: center;
+}
+.grid-cell:last-child {
+  grid-area: o;
   justify-content: center;
 }
 
