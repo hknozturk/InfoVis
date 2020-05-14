@@ -10,17 +10,32 @@ class ListItem:
         for index, row in self.data.get_accident_data_ordered_by_states().iterrows():
             self.list.append(html.Li([
                 html.Div([
-                    html.Span([row['Name']], className="grid-cell"),
-                    html.Small([row['Code']], className="grid-cell"),
+                    html.Div([
+                        html.Img(src="./assets/flags/" +
+                                 row['Code'].lower()+".svg", className="state-flag"),
+                        html.Span([row['Code']])
+                    ], className="grid-cell"),
+                    html.Span([row['Name']], className="grid-cell",
+                              style={'font-weight': '600'}),
+                    html.Div([
+                        html.Img(title="Total number of accidents", src="./assets/icons/transport.svg",
+                                 className="list-item-icon")
+                    ], className='grid-cell'),
+                    html.Span([str(int(row['NumberOfAccidents']))],
+                              className="grid-cell"),
                     html.Div([
                         html.Img(title="Total number of deaths", src="./assets/icons/cemetery.svg",
                                  className="list-item-icon")
                     ], className='grid-cell'),
-                    html.Span(['Total: ' + str(row['Total Death'])],
-                              className="grid-cell"),
-                    html.Div([html.Img(title="Average number of vehicle involved", src="./assets/icons/transport.svg",
+                    html.Span([str(int(row['NumberOfDeaths']))],
+                              className="grid-cell", style={'font-weight': '600'}),
+                    html.Div([html.Img(title="Average arrival time of EMP to accidents (minute)", src="./assets/icons/arr_scene.svg",
                                        className="list-item-icon")], className='grid-cell'),
-                    html.Span(['Avg: ' + str(round(row['Avg Cars Involved'], 2))],
+                    html.Span([str(round(row['AvgArrivalTime'], 2)) + ' m'],
+                              className="grid-cell"),
+                    html.Div([html.Img(title="Average arrival time of EMP to hospitals (minute)", src="./assets/icons/arr_hospital.svg",
+                                       className="list-item-icon")], className='grid-cell'),
+                    html.Span([str(round(row['AvgHospitalArrivalTime'], 2)) + ' m'],
                               className="grid-cell")
                 ], className="list-item")
             ], className="styled-list-item"))

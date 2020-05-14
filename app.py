@@ -52,7 +52,7 @@ app.layout = html.Div(id="app-layout", children=[
                   style={'width': '100%', 'height': '100%'})
     ], className="card"),
     html.Div(id='card-3', children=[
-        html.Div([
+        html.Div(id="list-component", children=[
             listComponent.generateList()
         ], className="scrollable", style={'margin': '4px'})
     ], className="card"),
@@ -70,17 +70,18 @@ app.layout = html.Div(id="app-layout", children=[
 
 
 @app.callback(
-    Output('map', 'figure'),
+    [Output('map', 'figure'),
+     Output('list-component', 'children')],
     [Input('year-range-slider', 'value'),
      Input('map', 'selectedData')]
 )
 def update_figure(selected_years, selected_data):
     dataProcessing.filter_data(selected_years)
     if selected_data is None:
-        return plotlyMap.draw_map()
+        return [plotlyMap.draw_map(), listComponent.generateList()]
     else:
         state_ids = plotlyMap.retrieve_selected_states(selected_data)
-        return plotlyMap.draw_map(state_ids)
+        return plotlyMap.draw_map(state_ids), listComponent.generateList()
 
 
 @app.callback(
