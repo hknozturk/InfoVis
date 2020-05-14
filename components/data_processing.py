@@ -93,6 +93,7 @@ class DataProcessing:
         states['NumberOfAccidents'] = grouped_states.size()
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
         states['AvgArrivalTime'] = grouped_states['RESPONSE_TIME'].mean()
+        states['AvgHospitalArrivalTime'] = grouped_states['HOSP_ARR_TIME'].mean()
         states.fillna(0, inplace=True)
 
         return states.sort_values(by=['NumberOfDeaths'], ascending=False)
