@@ -6,9 +6,9 @@ class PlotlyMap:
     def __init__(self, data_processing):
         self.data = data_processing
 
-    def draw_map(self, selected_states=[]):
+    def draw_map(self, selected_states=[], dark_theme=True):
         if selected_states:
-            return self.draw_counties_map(selected_states)
+            return self.draw_counties_map(selected_states, dark_theme)
         deaths = self.data.get_states_data()
         fig = go.Figure(data=go.Choropleth(
             locations=deaths.index,  # Spatial coordinates
@@ -18,14 +18,11 @@ class PlotlyMap:
             colorbar_title="Deaths",
         ))
 
-        fig.update_layout(
-            geo_scope='usa',  # limite map scope to USA
-            clickmode="event+select"
-        )
+        self.set_layout(fig, dark_theme)
 
         return fig
 
-    def draw_counties_map(self, selected_states):
+    def draw_counties_map(self, selected_states, dark_theme):
         filtered_df = self.data.get_selected_state_data(selected_states)
         fips = (filtered_df['STATE'].astype(str) +
                 filtered_df['COUNTY'].astype(str)).unique()
@@ -35,13 +32,9 @@ class PlotlyMap:
                               'FATALS'].sum(),
                           colorscale="Reds", zmin=0, zmax=50,
                           marker_opacity=0.5, marker_line_width=0))
-        fig.update_layout(mapbox_style="carto-positron",
-                          geo_scope='usa',
-                          mapbox_zoom=3,
-                          mapbox_center={"lat": 37.0902, "lon": -95.7129},
-                          clickmode="event+select"
-                          )
-        fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+
+        self.set_layout(fig, dark_theme)
+
         return fig
 
     def retrieve_selected_states(self, selected_states):
@@ -62,3 +55,25 @@ class PlotlyMap:
                 selected_states_id.append(state_id)
 
         return selected_states_id
+
+    def set_layout(self, fig, dark_theme=False):
+        if dark_theme:
+            return fig.update_layout(
+                geo=dict(bgcolor='rgb(34, 34, 34)',
+                         lakecolor='rgb(34, 34, 34)'),
+                paper_bgcolor='rgb(34, 34, 34)',
+                plot_bgcolor='rgb(34, 34, 34)',
+                font={"color": "White"},
+                geo_scope='usa',
+                margin={"r": 0, "t": 40, "l": 0, "b": 0},
+                clickmode="event+select")
+        else:
+            return fig.update_layout(
+                geo=dict(bgcolor='rgb(255, 255, 255)',
+                         lakecolor='rgb(255, 255, 255)'),
+                paper_bgcolor='rgb(255, 255, 255)',
+                plot_bgcolor='rgb(255, 255, 255)',
+                font={"color": "Black"},
+                geo_scope='usa',
+                margin={"r": 0, "t": 40, "l": 0, "b": 0},
+                clickmode="event+select")

@@ -81,7 +81,7 @@ def update_figure(selected_years, selected_data):
         return [plotlyMap.draw_map(), listComponent.generateList()]
     else:
         state_ids = plotlyMap.retrieve_selected_states(selected_data)
-        return plotlyMap.draw_map(state_ids), listComponent.generateList()
+        return plotlyMap.draw_map(selected_states=state_ids), listComponent.generateList()
 
 
 @app.callback(
