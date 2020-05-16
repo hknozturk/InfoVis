@@ -70,22 +70,21 @@ app.layout = html.Div(id="app-layout", children=[
     ], className="card")
 ], className="wrapper")
 
-print(CrashLevel(23).name)
-
 
 @app.callback(
     [Output('map', 'figure'),
      Output('list-component', 'children')],
     [Input('year-range-slider', 'value'),
-     Input('map', 'selectedData')]
+     Input('map', 'selectedData'),
+     Input('dark-mode-toggle', 'on')]
 )
-def update_figure(selected_years, selected_data):
+def update_figure(selected_years, selected_data, dark_mode):
     dataProcessing.filter_data(selected_years)
     if selected_data is None:
-        return [plotlyMap.draw_map(), listComponent.generateList()]
+        return [plotlyMap.draw_map(dark_theme=dark_mode), listComponent.generateList()]
     else:
         state_ids = plotlyMap.retrieve_selected_states(selected_data)
-        return plotlyMap.draw_map(selected_states=state_ids), listComponent.generateList()
+        return plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), listComponent.generateList()
 
 
 @app.callback(
