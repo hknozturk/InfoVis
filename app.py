@@ -14,6 +14,8 @@ from components.sunburst import SunburstChart
 # importing data_processing module
 from components.data_processing import DataProcessing
 
+from attributes.crash_level import *
+
 # dataProcessing object has all methods related data pre processing
 # We can pass dataProcessing object to other components to get the data.
 dataProcessing = DataProcessing()
@@ -67,6 +69,8 @@ app.layout = html.Div(id="app-layout", children=[
                   style={'width': '100%', 'height': '100%'})
     ], className="card")
 ], className="wrapper")
+
+print(CrashLevel(23).name)
 
 
 @app.callback(
