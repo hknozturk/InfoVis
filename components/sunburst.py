@@ -9,6 +9,7 @@ class SunburstChart:
         self.df = px.data.tips()
         self.data = data_processing.filter_accident_df
         data_processing.get_weather_info()
+        data_processing.get_harmful_event()
 
     def draw_pie(self):
         fig = px.sunburst(
