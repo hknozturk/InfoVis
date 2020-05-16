@@ -99,7 +99,7 @@ class DataProcessing:
         return weather_series.groupby(weather_series.index).sum()
 
     def get_harmful_event(self):
-        grouped_data_by_event = self.group_by_data(
+        grouped_data_by_event = self.filter_accident_df.groupby(
             self.filter_accident_df, ['HARM_EV'])
         grouped_data_by_event = grouped_data_by_event['FATALS'].sum()
         print(grouped_data_by_event)
