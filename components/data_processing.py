@@ -84,9 +84,11 @@ class DataProcessing:
         timeline_df['PERSONS'] = self.filter_person_df['YEAR'].value_counts()
         return timeline_df
 
-    # def get_weather_info(self):
-    #     weather_df = self.filter_accident_df['']
-    #     return weather_df
+    def get_weather_info(self):
+        grouped_data_by_weather = self.group_by_data(
+            self.filter_accident_df, ['WEATHER'])
+        grouped_data_by_weather = grouped_data_by_weather['FATALS'].sum()
+        print(grouped_data_by_weather)
 
     def get_accident_data_ordered_by_states(self):
         """
@@ -102,28 +104,12 @@ class DataProcessing:
 
         return states.sort_values(by=['NumberOfDeaths'], ascending=False)
 
-    def calculate_arrival_times(self):
+    def group_by_data(self, dataframe, group_by_attributes):
         """
-        this static method calculates average arrival times of EMP to scene and to hospital.
-        :param hour: dataframe that grouped by states.
+        method returns grouped data by passed attributes.
+        :param group_by_attributes: list of columns.
         """
-        # hour_range = range(0, 23)
-        # min_range = range(0, 59)
-        #
-        # filter_times = dataFrame[(dataFrame['NOT_MIN'].isin(min_range)) &
-        #                          (dataFrame['NOT_HOUR'].isin(hour_range)) &
-        #                          (dataFrame['ARR_MIN'].isin(min_range)) &
-        #                          (dataFrame['ARR_HOUR'].isin(hour_range))
-        #                          ]
-        #
-        # filter_times.loc[(filter_times['NOT_HOUR'] >
-        #                   filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
-        #
-        # filter_times['AVG_ARR_TIME'] = (
-        #     filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
-
-        # grouped_by_states = self.filter_accident_df.groupby(['STATE'])['RESPONSE_TIME'].mean()
-        # return grouped_by_states['AVG_ARR_TIME'].mean()
+        return dataframe.groupby(group_by_attributes)
 
     @staticmethod
     def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
@@ -193,3 +179,26 @@ class DataProcessing:
         dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
         dataFrame.to_csv(path)
+
+    # def calculate_arrival_times(self):
+    #     """
+    #     this static method calculates average arrival times of EMP to scene and to hospital.
+    #     :param hour: dataframe that grouped by states.
+    #     """
+    #     hour_range = range(0, 23)
+    #     min_range = range(0, 59)
+
+    #     filter_times = dataFrame[(dataFrame['NOT_MIN'].isin(min_range)) &
+    #                              (dataFrame['NOT_HOUR'].isin(hour_range)) &
+    #                              (dataFrame['ARR_MIN'].isin(min_range)) &
+    #                              (dataFrame['ARR_HOUR'].isin(hour_range))
+    #                              ]
+
+    #     filter_times.loc[(filter_times['NOT_HOUR'] >
+    #                       filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
+
+    #     filter_times['AVG_ARR_TIME'] = (
+    #         filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+
+    #     grouped_by_states = self.filter_accident_df.groupby(['STATE'])['RESPONSE_TIME'].mean()
+    #     return grouped_by_states['AVG_ARR_TIME'].mean()
