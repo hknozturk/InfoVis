@@ -85,10 +85,17 @@ class DataProcessing:
         return timeline_df
 
     def get_weather_info(self):
-        grouped_data_by_weather = self.group_by_data(
-            self.filter_accident_df, ['WEATHER'])
-        grouped_data_by_weather = grouped_data_by_weather['FATALS'].sum()
-        print(grouped_data_by_weather)
+        """
+        group fatals by weather and then return mapped weather list as mentioned in weather_dict
+        """
+        weather_dict = {
+            0: 'Clear', 1: 'Clear', 2: 'Rain', 3: 'Rain', 4: 'Snow', 5: 'Low visibility', 6: 'Other',
+            7: 'Low visibility', 8: 'Other', 10: 'Other', 11: 'Low visibility', 12: 'Rain',
+            98: 'Not reported', 99: 'Not reported'
+        }
+        weather_series = self.filter_accident_df.groupby(['WEATHER'])['FATALS'].sum()
+        weather_series.index = weather_series.index.map(weather_dict)
+        return weather_series.groupby(weather_series.index).sum()
 
     def get_accident_data_ordered_by_states(self):
         """
@@ -103,13 +110,6 @@ class DataProcessing:
         states.fillna(0, inplace=True)
 
         return states.sort_values(by=['NumberOfDeaths'], ascending=False)
-
-    def group_by_data(self, dataframe, group_by_attributes):
-        """
-        method returns grouped data by passed attributes.
-        :param group_by_attributes: list of columns.
-        """
-        return dataframe.groupby(group_by_attributes)
 
     @staticmethod
     def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
@@ -147,7 +147,7 @@ class DataProcessing:
                           filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
 
         filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
-            filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
         dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
@@ -168,13 +168,13 @@ class DataProcessing:
             (dataFrame['ARR_HOUR'].isin(hour_range)) &
             (dataFrame['HOSP_MN'].isin(min_range)) &
             (dataFrame['HOSP_HR'].isin(hour_range))
-        ]
+            ]
 
         filter_times.loc[(filter_times['ARR_HOUR'] >
                           filter_times['HOSP_HR']), 'HOSP_HR'] = 24
 
         filter_times['HOSP_ARR_TIME'] = (filter_times['HOSP_HR'] - filter_times['ARR_HOUR']) * 60 + (
-            filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
+                filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
 
         dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
