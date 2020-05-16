@@ -6,7 +6,7 @@ class PlotlyMap:
     def __init__(self, data_processing):
         self.data = data_processing
 
-    def draw_map(self, selected_states=[], dark_theme=True):
+    def draw_map(self, selected_states=[], dark_theme=False):
         if selected_states:
             return self.draw_counties_map(selected_states, dark_theme)
         deaths = self.data.get_states_data()
@@ -56,11 +56,11 @@ class PlotlyMap:
 
         return selected_states_id
 
-    def set_layout(self, fig, dark_theme=False):
+    def set_layout(self, fig, dark_theme):
         if dark_theme:
             return fig.update_layout(
                 geo=dict(bgcolor='rgb(34, 34, 34)',
-                         lakecolor='rgb(34, 34, 34)'),
+                         lakecolor='rgb(74,128,245)'),
                 paper_bgcolor='rgb(34, 34, 34)',
                 plot_bgcolor='rgb(34, 34, 34)',
                 font={"color": "White"},
@@ -70,7 +70,7 @@ class PlotlyMap:
         else:
             return fig.update_layout(
                 geo=dict(bgcolor='rgb(255, 255, 255)',
-                         lakecolor='rgb(255, 255, 255)'),
+                         lakecolor='rgb(74,128,245)'),
                 paper_bgcolor='rgb(255, 255, 255)',
                 plot_bgcolor='rgb(255, 255, 255)',
                 font={"color": "Black"},
