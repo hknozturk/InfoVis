@@ -12,5 +12,5 @@ class SunburstChart:
 
     def draw_pie(self):
         fig = px.sunburst(
-            self.data, path=['WEATHER', 'DAY_WEEK', 'HOUR'], values='FATALS')
+            self.data, path=['WEATHER', 'HARM_EV'])
         return fig
