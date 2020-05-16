@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 # Personal Folder and Files
+/data
 /datasets
 .config.json
 /config.json
