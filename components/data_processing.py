@@ -98,11 +98,23 @@ class DataProcessing:
         weather_series.index = weather_series.index.map(weather_dict)
         return weather_series.groupby(weather_series.index).sum()
 
-    # def get_harmful_event(self):
-    #     grouped_data_by_event = self.filter_accident_df.groupby(
-    #         self.filter_accident_df, ['HARM_EV'])
-    #     grouped_data_by_event = grouped_data_by_event['FATALS'].sum()
-    #     print(grouped_data_by_event)
+    def get_harmful_event(self):
+        """
+        group fatals by harmful events and then return mapped harmful_events list as mentioned in harmful_event_dict
+        """
+        harmful_event_dict = {
+            1: 'Overturn', 8: 'Pedestrian', 9: 'Pedestrian', 10: 'Railway', 12: 'Motor Vehicle', 14: 'Motor Vehicle',
+            54: 'Motor Vehicle', 55: 'Motor Vehicle', 16: 'Other Objects', 17: 'Other Objects', 18: 'Other Objects',
+            43: 'Other Objects', 53: 'Other Objects', 59: 'Other Objects', 73: 'Other Objects', 21: 'Bridge', 23: 'Bridge',
+            24: 'Barrier', 25: 'Barrier', 26: 'Barrier', 30: 'Barrier', 31: 'Barrier', 32: 'Barrier', 33: 'Barrier',
+            34: 'Barrier', 35: 'Barrier', 38: 'Barrier', 40: 'Barrier', 48: 'Barrier', 49: 'Barrier', 50: 'Barrier',
+            51: 'Barrier', 52: 'Barrier', 57: 'Barrier', 41: 'Tree', 42: 'Tree', 91: 'Uknown', 98: 'Uknown', 99: 'Unknown'
+        }
+        harmful_event_series = self.filter_accident_df.groupby(['HARM_EV'])[
+            'FATALS'].sum()
+        harmful_event_series.index = harmful_event_series.index.map(
+            harmful_event_dict)
+        return harmful_event_series.groupby(harmful_event_series.index).sum()
 
     def get_accident_data_ordered_by_states(self):
         """
