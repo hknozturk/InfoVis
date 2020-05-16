@@ -1,11 +1,16 @@
 import plotly.express as px
+from components.data_processing import DataProcessing
+
+data_processing = DataProcessing()
 
 
 class SunburstChart:
     def __init__(self):
         self.df = px.data.tips()
+        self.data = data_processing.filter_accident_df
+        data_processing.get_weather_info()
 
     def draw_pie(self):
         fig = px.sunburst(
-            self.df, path=['day', 'time', 'sex'], values='total_bill')
+            self.data, path=['WEATHER', 'DAY_WEEK', 'HOUR'], values='FATALS')
         return fig
