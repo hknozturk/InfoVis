@@ -26,7 +26,7 @@ barPlot = BarPlot(dataProcessing)
 graphWithSlider = GraphWithSlider()
 listComponent = List(dataProcessing)
 switchToggle = SwitchToggle()
-sunBurst = SunburstChart()
+sunBurst = SunburstChart(dataProcessing)
 
 app = dash.Dash(__name__)
 app.index_string = custom_dash_index.indexString
