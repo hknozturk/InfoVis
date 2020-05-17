@@ -21,8 +21,9 @@ class List:
                 dcc.Dropdown(
                     id='sort-list',
                     options=[
-                        {'label': 'Number of deaths', 'value': 'NumberOfDeaths'},
-                        {'label': 'Number of accidents',
+                        {'label': 'Deaths per 1 million',
+                            'value': 'NumberOfDeaths'},
+                        {'label': 'Accidents per 1 million',
                             'value': 'NumberOfAccidents'},
                         {'label': 'EMT arrival time to scene',
                          'value': 'AvgArrivalTime'},
