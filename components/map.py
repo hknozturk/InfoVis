@@ -48,6 +48,7 @@ class PlotlyMap:
         selected_states_id = []
         points = selected_states.get('points')
         states = self.data.state_names_df
+        states['Number'] = states.index
 
         for point in points:
             location = point.get('location')
