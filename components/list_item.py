@@ -29,11 +29,11 @@ class ListItem:
                     ], className='grid-cell'),
                     html.Span([str(int(row['NumberOfDeaths']))],
                               className="grid-cell", style={'font-weight': '600'}),
-                    html.Div([html.Img(title="Average arrival time of EMP to accidents (minute)", src="./assets/icons/arr_scene.svg",
+                    html.Div([html.Img(title="Average arrival time of EMT to accidents (minute)", src="./assets/icons/arr_scene.svg",
                                        className="list-item-icon")], className='grid-cell'),
                     html.Span([str(round(row['AvgArrivalTime'], 2)) + ' m'],
                               className="grid-cell"),
-                    html.Div([html.Img(title="Average arrival time of EMP to hospitals (minute)", src="./assets/icons/arr_hospital.svg",
+                    html.Div([html.Img(title="Average arrival time of EMT to hospitals (minute)", src="./assets/icons/arr_hospital.svg",
                                        className="list-item-icon")], className='grid-cell'),
                     html.Span([str(round(row['AvgHospitalArrivalTime'], 2)) + ' m'],
                               className="grid-cell")
