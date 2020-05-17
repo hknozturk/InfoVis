@@ -84,7 +84,7 @@ class DataProcessing:
         timeline_df['PERSONS'] = self.filter_person_df['YEAR'].value_counts()
         return timeline_df
 
-    def get_weather_info(self):
+    def get_sunburst_data(self):
         """
         group fatals by weather and then return mapped weather list as mentioned in weather_dict
         """
@@ -93,28 +93,22 @@ class DataProcessing:
             7: 'Low visibility', 8: 'Other', 10: 'Other', 11: 'Low visibility', 12: 'Rain',
             98: 'Not reported', 99: 'Not reported'
         }
-        weather_series = self.filter_accident_df.groupby(['WEATHER'])[
-            'FATALS'].sum()
-        weather_series.index = weather_series.index.map(weather_dict)
-        return weather_series.groupby(weather_series.index).sum()
-
-    def get_harmful_event(self):
-        """
-        group fatals by harmful events and then return mapped harmful_events list as mentioned in harmful_event_dict
-        """
         harmful_event_dict = {
             1: 'Overturn', 8: 'Pedestrian', 9: 'Pedestrian', 10: 'Railway', 12: 'Motor Vehicle', 14: 'Motor Vehicle',
             54: 'Motor Vehicle', 55: 'Motor Vehicle', 16: 'Other Objects', 17: 'Other Objects', 18: 'Other Objects',
-            43: 'Other Objects', 53: 'Other Objects', 59: 'Other Objects', 73: 'Other Objects', 21: 'Bridge', 23: 'Bridge',
+            43: 'Other Objects', 53: 'Other Objects', 59: 'Other Objects', 73: 'Other Objects', 21: 'Bridge',
+            23: 'Bridge',
             24: 'Barrier', 25: 'Barrier', 26: 'Barrier', 30: 'Barrier', 31: 'Barrier', 32: 'Barrier', 33: 'Barrier',
             34: 'Barrier', 35: 'Barrier', 38: 'Barrier', 40: 'Barrier', 48: 'Barrier', 49: 'Barrier', 50: 'Barrier',
-            51: 'Barrier', 52: 'Barrier', 57: 'Barrier', 41: 'Tree', 42: 'Tree', 91: 'Uknown', 98: 'Uknown', 99: 'Unknown'
+            51: 'Barrier', 52: 'Barrier', 57: 'Barrier', 41: 'Tree', 42: 'Tree', 91: 'Unknown', 98: 'Unknown',
+            99: 'Unknown'
         }
-        harmful_event_series = self.filter_accident_df.groupby(['HARM_EV'])[
-            'FATALS'].sum()
-        harmful_event_series.index = harmful_event_series.index.map(
-            harmful_event_dict)
-        return harmful_event_series.groupby(harmful_event_series.index).sum()
+        sun_burst_df = pd.DataFrame()
+        sun_burst_df['FATALS'] = self.filter_accident_df['FATALS']
+        sun_burst_df['WEATHER'] = self.filter_accident_df['WEATHER'].map(weather_dict)
+        sun_burst_df['HARM_EV'] = self.filter_accident_df['HARM_EV'].map(harmful_event_dict)
+        sun_burst_df['HARM_EV'] = sun_burst_df['HARM_EV'].fillna('Unknown')
+        return sun_burst_df
 
     def get_accident_data_ordered_by_states(self):
         """
@@ -166,7 +160,7 @@ class DataProcessing:
                           filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
 
         filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
-            filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
         dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
@@ -187,13 +181,13 @@ class DataProcessing:
             (dataFrame['ARR_HOUR'].isin(hour_range)) &
             (dataFrame['HOSP_MN'].isin(min_range)) &
             (dataFrame['HOSP_HR'].isin(hour_range))
-        ]
+            ]
 
         filter_times.loc[(filter_times['ARR_HOUR'] >
                           filter_times['HOSP_HR']), 'HOSP_HR'] = 24
 
         filter_times['HOSP_ARR_TIME'] = (filter_times['HOSP_HR'] - filter_times['ARR_HOUR']) * 60 + (
-            filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
+                filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
 
         dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"

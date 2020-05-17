@@ -5,12 +5,8 @@ data_processing = DataProcessing()
 
 
 class SunburstChart:
-    def __init__(self):
-        self.data = data_processing.filter_accident_df
-        self.weather = data_processing.get_weather_info()
-        self.event = data_processing.get_harmful_event()
 
     def draw_pie(self):
-        fig = px.sunburst(
-            # self.data, path=[self.weather, self.event])
+        df = data_processing.get_sunburst_data()
+        fig = px.sunburst(df, path=['WEATHER', 'HARM_EV'], values='FATALS')
         return fig
