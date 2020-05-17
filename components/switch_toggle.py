@@ -14,12 +14,12 @@ class SwitchToggle:
 
     def updateLayoutStyle(self, darkMode):
         if darkMode:
-            return {'background-color': 'rgb(51, 51, 51)'}
+            return {'backgroundColor': 'rgb(51, 51, 51)'}
         else:
-            return {'background-color': 'rgb(199, 199, 199)'}
+            return {'backgroundColor': 'rgb(199, 199, 199)'}
 
     def updateCardStyle(self, darkMode):
         if darkMode:
-            return [{'background-color': 'rgb(34, 34, 34)', 'color': 'rgb(199, 189, 189)'} for i in range(5)]
+            return [{'backgroundColor': 'rgb(34, 34, 34)', 'color': 'rgb(199, 189, 189)'} for i in range(5)]
         else:
-            return [{'background-color': 'rgb(255, 255, 255)', 'color': 'rgb(24, 24, 24)'} for i in range(5)]
+            return [{'backgroundColor': 'rgb(255, 255, 255)', 'color': 'rgb(24, 24, 24)'} for i in range(5)]

@@ -16,7 +16,7 @@ class ListItem:
                         html.Span([row['Code']])
                     ], className="grid-cell"),
                     html.Span([row['Name']], className="grid-cell",
-                              style={'font-weight': '600'}),
+                              style={'fontWeight': '600'}),
                     html.Div([
                         html.Img(title="Total number of accidents", src="./assets/icons/transport.svg",
                                  className="list-item-icon")
@@ -28,12 +28,12 @@ class ListItem:
                                  className="list-item-icon")
                     ], className='grid-cell'),
                     html.Span([str(int(row['NumberOfDeaths']))],
-                              className="grid-cell", style={'font-weight': '600'}),
-                    html.Div([html.Img(title="Average arrival time of EMT to accidents (minute)", src="./assets/icons/arr_scene.svg",
+                              className="grid-cell", style={'fontWeight': '600'}),
+                    html.Div([html.Img(title="Average arrival time of EMTs to accident scenes (min)", src="./assets/icons/arr_scene.svg",
                                        className="list-item-icon")], className='grid-cell'),
                     html.Span([str(round(row['AvgArrivalTime'], 2)) + ' m'],
                               className="grid-cell"),
-                    html.Div([html.Img(title="Average arrival time of EMT to hospitals (minute)", src="./assets/icons/arr_hospital.svg",
+                    html.Div([html.Img(title="Average arrival time of EMTs to hospitals (min)", src="./assets/icons/arr_hospital.svg",
                                        className="list-item-icon")], className='grid-cell'),
                     html.Span([str(round(row['AvgHospitalArrivalTime'], 2)) + ' m'],
                               className="grid-cell")

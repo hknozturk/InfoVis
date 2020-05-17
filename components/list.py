@@ -26,8 +26,8 @@ class List:
                     value='NumberOfDeaths',
                     searchable=False,
                     clearable=False,
-                    style={'font-size': '14px', 'margin-bottom': '5px'}
+                    style={'fontSize': '14px'}
                 )
-            ]),
+            ], style={'position': 'sticky', 'top': 0, 'zIndex': 10}),
             html.Ul(listItems)
         ])
