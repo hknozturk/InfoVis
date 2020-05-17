@@ -111,7 +111,7 @@ class DataProcessing:
         sun_burst_df['HARM_EV'] = sun_burst_df['HARM_EV'].fillna('Unknown')
         return sun_burst_df
 
-    def get_accident_data_ordered_by_states(self):
+    def get_accident_data_ordered_by_states(self, order_by):
         """
         returns ordered filter_accident_df to populate list_items (list component)
         """
@@ -123,7 +123,7 @@ class DataProcessing:
         states['AvgHospitalArrivalTime'] = grouped_states['HOSP_ARR_TIME'].mean()
         states.fillna(0, inplace=True)
 
-        return states.sort_values(by=['NumberOfDeaths'], ascending=False)
+        return states.sort_values(by=[order_by], ascending=False)
 
     @staticmethod
     def read_data(file_name, years=[2018]):  # , 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):

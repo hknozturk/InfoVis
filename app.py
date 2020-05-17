@@ -55,7 +55,7 @@ app.layout = html.Div(id="app-layout", children=[
     ], className="card"),
     html.Div(id='card-3', children=[
         html.Div(id="list-component", children=[
-            listComponent.generateList()
+            listComponent.generateList("NumberOfDeaths")
         ], className="scrollable", style={'margin': '4px'})
     ], className="card"),
     html.Div(id='card-4', children=[
@@ -81,10 +81,10 @@ app.layout = html.Div(id="app-layout", children=[
 def update_figure(selected_years, selected_data, dark_mode):
     dataProcessing.filter_data(selected_years)
     if selected_data is None:
-        return [plotlyMap.draw_map(dark_theme=dark_mode), listComponent.generateList()]
+        return [plotlyMap.draw_map(dark_theme=dark_mode), listComponent.generateList("NumberOfDeaths")]
     else:
         state_ids = plotlyMap.retrieve_selected_states(selected_data)
-        return plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), listComponent.generateList()
+        return plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), listComponent.generateList("NumberOfDeaths")
 
 
 @app.callback(

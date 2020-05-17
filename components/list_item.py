@@ -5,9 +5,9 @@ class ListItem:
     def __init__(self, data_processing):
         self.data = data_processing
 
-    def generateItems(self):
+    def generateItems(self, order_by):
         self.list = []
-        for index, row in self.data.get_accident_data_ordered_by_states().iterrows():
+        for index, row in self.data.get_accident_data_ordered_by_states(order_by).iterrows():
             self.list.append(html.Li([
                 html.Div([
                     html.Div([
