@@ -22,7 +22,7 @@ class DataProcessing:
             self.geojson = json.load(response)
 
         self.state_names_populations_df = pd.read_csv(
-            home_directory + 'state_names.csv', sep=';', index_col='Number')
+            home_directory + 'state_names_population.csv', sep=';', index_col='Number')
 
         self.counties_names_df = pd.read_csv(
             home_directory + 'counties.csv', index_col='fips')
