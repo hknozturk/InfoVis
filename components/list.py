@@ -7,14 +7,19 @@ class List:
     def __init__(self, data_processing):
         self.listItem = ListItem(data_processing)
 
-    def generateList(self, order_by):
-        listItems = self.listItem.generateItems(order_by)
+    def generateList(self, sort_by, dark_theme):
+        listItems = self.listItem.generateItems(sort_by)
+
+        if dark_theme:
+            background_color = 'rgb(34, 34, 34)'
+        else:
+            background_color = 'rgb(255, 255, 255)'
 
         return html.Div([
             html.Div([
                 html.Span(['Sort By:'], style={'width': '80px'}),
                 dcc.Dropdown(
-                    id='list-filter',
+                    id='sort-list',
                     options=[
                         {'label': 'Number of deaths', 'value': 'NumberOfDeaths'},
                         {'label': 'Number of accidents',
@@ -24,12 +29,12 @@ class List:
                         {'label': 'EMT arrival time to hospital',
                          'value': 'AvgHospitalArrivalTime'}
                     ],
-                    value='NumberOfDeaths',
+                    value=sort_by,
                     searchable=False,
                     clearable=False,
                     style={'fontSize': '14px',
                            'width': '-webkit-fill-available'}
                 )
-            ], style={'position': 'sticky', 'top': 0, 'zIndex': 10, 'display': 'flex', 'alignItems': 'center', 'backgroundColor': 'white'}),
+            ], style={'position': 'sticky', 'top': 0, 'zIndex': 10, 'display': 'flex', 'alignItems': 'center', 'backgroundColor': background_color}),
             html.Ul(listItems, style={'marginTop': '10px'})
         ])

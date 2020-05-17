@@ -5,9 +5,19 @@ class ListItem:
     def __init__(self, data_processing):
         self.data = data_processing
 
-    def generateItems(self, order_by):
+    def generateItems(self, sort_by):
         self.list = []
-        for index, row in self.data.get_accident_data_ordered_by_states(order_by).iterrows():
+        self.font_weights = [500, 500, 500, 500]
+        if sort_by == 'NumberOfAccidents':
+            self.font_weights = [600, 500, 500, 500]
+        elif sort_by == 'AvgArrivalTime':
+            self.font_weights = [500, 500, 600, 500]
+        elif sort_by == 'AvgHospitalArrivalTime':
+            self.font_weights = [500, 500, 500, 600]
+        else:
+            self.font_weights = [500, 600, 500, 500]
+
+        for _, row in self.data.get_accident_data_ordered_by_states(sort_by).iterrows():
             self.list.append(html.Li([
                 html.Div([
                     html.Div([
@@ -22,21 +32,21 @@ class ListItem:
                                  className="list-item-icon")
                     ], className='grid-cell'),
                     html.Span([str(int(row['NumberOfAccidents']))],
-                              className="grid-cell"),
+                              className="grid-cell", style={'fontWeight': self.font_weights[0]}),
                     html.Div([
                         html.Img(title="Total number of deaths", src="./assets/icons/cemetery.svg",
                                  className="list-item-icon")
                     ], className='grid-cell'),
                     html.Span([str(int(row['NumberOfDeaths']))],
-                              className="grid-cell", style={'fontWeight': '600'}),
+                              className="grid-cell", style={'fontWeight': self.font_weights[1]}),
                     html.Div([html.Img(title="Average arrival time of EMTs to accident scenes (min)", src="./assets/icons/arr_scene.svg",
                                        className="list-item-icon")], className='grid-cell'),
                     html.Span([str(round(row['AvgArrivalTime'], 2)) + ' m'],
-                              className="grid-cell"),
+                              className="grid-cell", style={'fontWeight': self.font_weights[2]}),
                     html.Div([html.Img(title="Average arrival time of EMTs to hospitals (min)", src="./assets/icons/arr_hospital.svg",
                                        className="list-item-icon")], className='grid-cell'),
                     html.Span([str(round(row['AvgHospitalArrivalTime'], 2)) + ' m'],
-                              className="grid-cell")
+                              className="grid-cell", style={'fontWeight': self.font_weights[3]})
                 ], className="list-item")
             ], className="styled-list-item"))
 
