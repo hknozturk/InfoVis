@@ -55,7 +55,7 @@ app.layout = html.Div(id="app-layout", children=[
     ], className="card"),
     html.Div(id='card-3', children=[
         html.Div(id="list-component", children=[
-            listComponent.generateList("NumberOfDeaths", False)
+            listComponent.generateList("DeathsPerMil", False)
         ], className="scrollable", style={'margin': '4px'})
     ], className="card"),
     html.Div(id='card-4', children=[
