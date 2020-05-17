@@ -16,4 +16,5 @@ class BarPlot:
             go.Bar(name='Fatals', x=timeline_df.index,
                    y=timeline_df['FATALS'], marker_color='rgb(239,84,59)')
         ])
+        fig.update_layout(margin=dict(t=50, b=0, r=0, l=0))
         return fig
