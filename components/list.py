@@ -22,8 +22,12 @@ class List:
                     id='sort-list',
                     options=[
                         {'label': 'Deaths per 1 million',
+                         'value': 'DeathsPerMil'},
+                        {'label': 'Total number of deaths',
                             'value': 'NumberOfDeaths'},
                         {'label': 'Accidents per 1 million',
+                         'value': 'AccidentsPerMil'},
+                        {'label': 'Total number of accidents',
                             'value': 'NumberOfAccidents'},
                         {'label': 'EMT arrival time to scene',
                          'value': 'AvgArrivalTime'},

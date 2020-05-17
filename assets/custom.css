@@ -125,12 +125,11 @@ small {
 
 .list-item {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   grid-template-areas:
-    'f f g h i n'
-    'f f g h i n'
-    'j j k l m o';
+    'f f g h i'
+    'j j k l m';
   padding-bottom: 10px;
   padding-left: 10px;
 }
@@ -157,6 +156,7 @@ small {
 .grid-cell:nth-child(4) {
   grid-area: k;
   justify-content: center;
+  flex-direction: column;
 }
 .grid-cell:nth-child(5) {
   grid-area: h;
@@ -165,22 +165,16 @@ small {
 .grid-cell:nth-child(6) {
   grid-area: l;
   justify-content: center;
+  flex-direction: column;
 }
 .grid-cell:nth-child(7) {
   grid-area: i;
   justify-content: center;
 }
-.grid-cell:nth-child(8) {
+.grid-cell:last-child {
   grid-area: m;
   justify-content: center;
-}
-.grid-cell:nth-child(9) {
-  grid-area: n;
-  justify-content: center;
-}
-.grid-cell:last-child {
-  grid-area: o;
-  justify-content: center;
+  flex-direction: column;
 }
 
 .list-item-icon {
