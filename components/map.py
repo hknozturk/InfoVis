@@ -27,14 +27,12 @@ class PlotlyMap:
 
     def draw_counties_map(self, selected_states, dark_theme):
         filtered_df = self.data.get_selected_state_data(selected_states)
-        fips = (filtered_df['STATE'].astype(str) +
-                filtered_df['COUNTY'].astype(str)).unique()
         fig = go.Figure(
-            go.Choropleth(geojson=self.data.geojson, locations=fips,
-                          z=filtered_df.groupby(['STATE', 'COUNTY'])[
-                              'FATALS'].sum(),
-                          colorscale="Reds", zmin=0, zmax=50,
-                          marker_opacity=0.5, marker_line_width=0))
+            px.choropleth(filtered_df, geojson=self.data.geojson, locations=filtered_df.index,
+                          color='FATALS',
+                          hover_name='county_name',
+                          hover_data=['FATALS'],
+                          color_continuous_scale="Reds"))
 
         self.set_layout(fig, dark_theme)
 

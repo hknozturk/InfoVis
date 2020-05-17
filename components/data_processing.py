@@ -21,8 +21,10 @@ class DataProcessing:
         with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
             self.geojson = json.load(response)
 
-        self.state_names_df = self.states = pd.read_csv(
-            home_directory + 'state_names.csv', sep=';', index_col='Number')
+        self.state_names_df = pd.read_csv(home_directory + 'state_names.csv', sep=';', index_col='Number')
+
+        self.counties_names_df = pd.read_csv(home_directory + 'counties.csv', index_col='fips')
+        self.counties_names_df.index = self.counties_names_df.index.map("{:05}".format)
 
         # Warning accident_df has original copy of data don't change it
         # use filter_accident_df for showing and updating data.
@@ -52,12 +54,16 @@ class DataProcessing:
         get the deaths per counties for selected_states.
         :param selected_states: List of integers of selected states.
         """
-
         filtered_df = self.filter_accident_df.loc[(
             self.filter_accident_df['STATE'].isin(selected_states))]
         filtered_df['STATE'] = filtered_df['STATE'].map("{:02}".format)
         filtered_df['COUNTY'] = filtered_df['COUNTY'].map("{:03}".format)
-        return filtered_df
+        filtered_df['fips'] = filtered_df['STATE'] + filtered_df['COUNTY']
+        filtered_df.index = filtered_df['fips']
+        counties_df = filtered_df.groupby(['STATE', 'COUNTY'])['FATALS'].sum()
+        counties_df.index = counties_df.index.map('{0[0]}{0[1]}'.format)
+        counties_df = pd.concat([counties_df, self.counties_names_df], axis=1, join="inner")
+        return counties_df
 
     def filter_data(self, selected_years):
         """
@@ -161,7 +167,7 @@ class DataProcessing:
                           filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
 
         filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
-            filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
         dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
@@ -182,13 +188,13 @@ class DataProcessing:
             (dataFrame['ARR_HOUR'].isin(hour_range)) &
             (dataFrame['HOSP_MN'].isin(min_range)) &
             (dataFrame['HOSP_HR'].isin(hour_range))
-        ]
+            ]
 
         filter_times.loc[(filter_times['ARR_HOUR'] >
                           filter_times['HOSP_HR']), 'HOSP_HR'] = 24
 
         filter_times['HOSP_ARR_TIME'] = (filter_times['HOSP_HR'] - filter_times['ARR_HOUR']) * 60 + (
-            filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
+                filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
 
         dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
