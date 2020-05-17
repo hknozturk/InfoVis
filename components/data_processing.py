@@ -22,7 +22,7 @@ class DataProcessing:
             self.geojson = json.load(response)
 
         self.state_names_df = self.states = pd.read_csv(
-            home_directory + 'state_names.csv', sep=';')
+            home_directory + 'state_names.csv', sep=';', index_col='Number')
 
         # Warning accident_df has original copy of data don't change it
         # use filter_accident_df for showing and updating data.
@@ -44,9 +44,8 @@ class DataProcessing:
         get the number of fatalities per state for all us states.
         """
         deaths = self.filter_accident_df.groupby(['STATE'])['FATALS'].sum()
-        d = self.state_names_df.set_index('Number')['Code'].to_dict()
-        deaths.index = deaths.index.map(d)
-        return deaths
+        states_df = pd.concat([self.state_names_df, deaths], axis=1)
+        return states_df
 
     def get_selected_state_data(self, selected_states):
         """
@@ -114,7 +113,7 @@ class DataProcessing:
         """
         returns ordered filter_accident_df to populate list_items (list component)
         """
-        states = self.state_names_df.copy().set_index(['Number'])
+        states = self.state_names_df.copy()
         grouped_states = self.filter_accident_df.groupby(['STATE'])
         states['NumberOfAccidents'] = grouped_states.size()
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
@@ -125,7 +124,7 @@ class DataProcessing:
         return states.sort_values(by=['NumberOfDeaths'], ascending=False)
 
     @staticmethod
-    def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+    def read_data(file_name, years=[2018]):  # , 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         """
         reading data from local storage for years in years list.
         :param years: List of years to read from local file system.

@@ -1,4 +1,5 @@
 import plotly.graph_objects as go
+import plotly.express as px
 
 
 class PlotlyMap:
@@ -9,13 +10,15 @@ class PlotlyMap:
     def draw_map(self, selected_states=[], dark_theme=False):
         if selected_states:
             return self.draw_counties_map(selected_states, dark_theme)
-        deaths = self.data.get_states_data()
-        fig = go.Figure(data=go.Choropleth(
-            locations=deaths.index,  # Spatial coordinates
-            z=deaths,  # Data to be color-coded
-            colorscale='Reds',
+        states_df = self.data.get_states_data()
+        fig = go.Figure(data=px.choropleth(
+            states_df,
+            locations='Code',
+            color='FATALS',
+            color_continuous_scale='Reds',
             locationmode='USA-states',
-            colorbar_title="Deaths",
+            hover_name='Name',
+            hover_data=['FATALS']
         ))
 
         self.set_layout(fig, dark_theme)
