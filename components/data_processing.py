@@ -104,12 +104,14 @@ class DataProcessing:
         }
         sun_burst_df = pd.DataFrame()
         sun_burst_df['FATALS'] = self.filter_accident_df['FATALS']
-        sun_burst_df['WEATHER'] = self.filter_accident_df['WEATHER'].map(weather_dict)
-        sun_burst_df['HARM_EV'] = self.filter_accident_df['HARM_EV'].map(harmful_event_dict)
+        sun_burst_df['WEATHER'] = self.filter_accident_df['WEATHER'].map(
+            weather_dict)
+        sun_burst_df['HARM_EV'] = self.filter_accident_df['HARM_EV'].map(
+            harmful_event_dict)
         sun_burst_df['HARM_EV'] = sun_burst_df['HARM_EV'].fillna('Unknown')
         return sun_burst_df
 
-    def get_accident_data_ordered_by_states(self):
+    def get_accident_data_ordered_by_states(self, sort_by):
         """
         returns ordered filter_accident_df to populate list_items (list component)
         """
@@ -121,7 +123,7 @@ class DataProcessing:
         states['AvgHospitalArrivalTime'] = grouped_states['HOSP_ARR_TIME'].mean()
         states.fillna(0, inplace=True)
 
-        return states.sort_values(by=['NumberOfDeaths'], ascending=False)
+        return states.sort_values(by=[sort_by], ascending=False)
 
     @staticmethod
     def read_data(file_name, years=[2018]):  # , 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
@@ -159,7 +161,7 @@ class DataProcessing:
                           filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
 
         filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
-                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+            filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
         dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
@@ -180,13 +182,13 @@ class DataProcessing:
             (dataFrame['ARR_HOUR'].isin(hour_range)) &
             (dataFrame['HOSP_MN'].isin(min_range)) &
             (dataFrame['HOSP_HR'].isin(hour_range))
-            ]
+        ]
 
         filter_times.loc[(filter_times['ARR_HOUR'] >
                           filter_times['HOSP_HR']), 'HOSP_HR'] = 24
 
         filter_times['HOSP_ARR_TIME'] = (filter_times['HOSP_HR'] - filter_times['ARR_HOUR']) * 60 + (
-                filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
+            filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
 
         dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"

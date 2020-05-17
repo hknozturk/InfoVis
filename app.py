@@ -55,7 +55,7 @@ app.layout = html.Div(id="app-layout", children=[
     ], className="card"),
     html.Div(id='card-3', children=[
         html.Div(id="list-component", children=[
-            listComponent.generateList()
+            listComponent.generateList("NumberOfDeaths", False)
         ], className="scrollable", style={'margin': '4px'})
     ], className="card"),
     html.Div(id='card-4', children=[
@@ -76,15 +76,16 @@ app.layout = html.Div(id="app-layout", children=[
      Output('list-component', 'children')],
     [Input('year-range-slider', 'value'),
      Input('map', 'selectedData'),
-     Input('dark-mode-toggle', 'on')]
+     Input('dark-mode-toggle', 'on'),
+     Input('sort-list', 'value')]
 )
-def update_figure(selected_years, selected_data, dark_mode):
+def update_figure(selected_years, selected_data, dark_mode, list_sort_value):
     dataProcessing.filter_data(selected_years)
     if selected_data is None:
-        return [plotlyMap.draw_map(dark_theme=dark_mode), listComponent.generateList()]
+        return [plotlyMap.draw_map(dark_theme=dark_mode), listComponent.generateList(list_sort_value, dark_mode)]
     else:
         state_ids = plotlyMap.retrieve_selected_states(selected_data)
-        return plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), listComponent.generateList()
+        return plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), listComponent.generateList(list_sort_value, dark_mode)
 
 
 @app.callback(
