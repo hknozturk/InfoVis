@@ -153,8 +153,8 @@ class DataProcessing:
 
         return states.sort_values(by=[sort_by], ascending=False)
 
-    def get_data_grouped_by_months(self):
-        grouped_data = self.filter_accident_df.groupby(['MONTH'])
+    def get_data_grouped_by_times(self, group_by_value):
+        grouped_data = self.filter_accident_df.groupby([group_by_value])
         return grouped_data['FATALS'].sum()
 
     @staticmethod
