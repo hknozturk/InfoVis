@@ -17,7 +17,8 @@ class BarPlot:
             go.Bar(name='Fatals', x=timeline_df.index,
                    y=timeline_df['FATALS'], marker_color='rgb(239,84,59)')
         ])
-        fig.update_layout(margin=dict(t=50, b=0, r=0, l=0))
+        fig.update_layout(margin=dict(t=50, b=0, r=0, l=0), paper_bgcolor='rgba(0,0,0,0)',
+                          plot_bgcolor='rgba(0,0,0,0)', font=dict(color="#67748E"))
         return fig
 
     def months_bar_plot(self):
@@ -26,14 +27,14 @@ class BarPlot:
             go.Bar(name="Anani siktim oc",
                    x=months_fatal_df.index, y=months_fatal_df, marker={'color': months_fatal_df, 'colorscale': 'reds'})
         ])
-        fig.update_layout(coloraxis_showscale=False, paper_bgcolor='rgba(0,0,0,0)',
+        fig.update_layout(coloraxis_showscale=False, paper_bgcolor='rgba(0,0,0,0)', font=dict(color="#67748E"),
                           plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=10, l=10), height=200,
                           xaxis=dict(
                               tickmode='array',
                               tickvals=months_fatal_df.index,
                               ticktext=['Jan', 'Feb', 'Mar', 'Apr', 'May',
                                         'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                          )
-                          )
+        )
+        )
 
         return fig

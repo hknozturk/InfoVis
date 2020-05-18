@@ -59,23 +59,12 @@ class PlotlyMap:
         return selected_states_id
 
     def set_layout(self, fig, dark_theme):
-        if dark_theme:
-            return fig.update_layout(
-                geo=dict(bgcolor='rgb(34, 34, 34)',
-                         lakecolor='rgb(74,128,245)'),
-                paper_bgcolor='rgb(34, 34, 34)',
-                plot_bgcolor='rgb(34, 34, 34)',
-                font={"color": "White"},
-                geo_scope='usa',
-                margin={"r": 0, "t": 40, "l": 0, "b": 0},
-                clickmode="event+select")
-        else:
-            return fig.update_layout(
-                geo=dict(bgcolor='rgb(255, 255, 255)',
-                         lakecolor='rgb(74,128,245)'),
-                paper_bgcolor='rgb(255, 255, 255)',
-                plot_bgcolor='rgb(255, 255, 255)',
-                font={"color": "Black"},
-                geo_scope='usa',
-                margin={"r": 0, "t": 40, "l": 0, "b": 0},
-                clickmode="event+select")
+        return fig.update_layout(
+            geo=dict(bgcolor='rgba(0, 0, 0, 0)',
+                     lakecolor='rgb(74,128,245)'),
+            paper_bgcolor='rgba(0, 0, 0, 0)',
+            plot_bgcolor='rgba(0, 0, 0, 0)',
+            font={"color": "#67748E"},
+            geo_scope='usa',
+            margin={"r": 0, "t": 40, "l": 0, "b": 0},
+            clickmode="event+select")
