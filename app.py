@@ -54,12 +54,18 @@ app.layout = html.Div(id="app-layout", children=[
             html.Div([
                 html.Label('Filter months'),
                 dcc.Graph(id='months-filter', figure=barPlot.months_bar_plot(),
-                          style={'marginLeft': '10px'})
+                          style={'marginLeft': '10px'},
+                          config={
+                    'displayModeBar': False
+                })
             ], style={'marginTop': '20px'}),
             html.Div([
                 html.Label('Filter days'),
                 dcc.Graph(id='days-filter', figure=barPlot.days_bar_plot(),
-                          style={'marginLeft': '10px'})
+                          style={'marginLeft': '10px'},
+                          config={
+                    'displayModeBar': False
+                })
             ], style={'marginTop': '20px'})
         ])
     ], className="card"),
