@@ -145,6 +145,10 @@ class DataProcessing:
 
         return states.sort_values(by=[sort_by], ascending=False)
 
+    def get_data_grouped_by_months(self):
+        grouped_data = self.filter_accident_df.groupby(['MONTH'])
+        return grouped_data['FATALS'].sum()
+
     @staticmethod
     def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         """
