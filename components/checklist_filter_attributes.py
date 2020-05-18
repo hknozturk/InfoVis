@@ -10,9 +10,10 @@ class ChecklistFilterAttributes:
         return html.Div([
             html.Label('Filter accidents'),
             dcc.Checklist(
+                id='check_box',
                 options=[
                     {'label': 'Speeding', 'value': 'SPEEDREL'},
-                    {'label': 'Drinking', 'value': 'DR_DRINK'},
+                    {'label': 'Drinking', 'value': 'DRUNK_DR'},
                     {'label': 'Driver License', 'value': 'L_TYPE'}
                 ],
                 value=[],

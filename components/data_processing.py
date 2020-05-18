@@ -1,7 +1,6 @@
 import pandas as pd
 import json
 from urllib.request import urlopen
-import numpy as np
 
 # reading config json file.
 with open('config.json', 'r') as f:
@@ -73,11 +72,13 @@ class DataProcessing:
             [counties_df, self.counties_names_df], axis=1, join="inner")
         return counties_df
 
-    def filter_data(self, selected_years, months, days):
+    def filter_data(self, selected_years, months, days, f_values):
         """
         updating filter_accident_df with range in selected_years.
         :param selected_years: List of years range from range slider.
         :param months: List of month selected on month bar chart filter.
+        :param days: List of days selected on day bar chart filter.
+        :param f_values: List of check boxes filter selected in filter checkboxes.
         """
         years_list = list(range(selected_years[0], selected_years[1] + 1))
         self.year_range = years_list
@@ -94,6 +95,8 @@ class DataProcessing:
         if days:
             self.filter_accident_df = self.filter_columns(self.filter_accident_df, 'DAY_WEEK', days)
             # self.filter_person_df = self.filter_columns(self.filter_person_df, 'DAY_WEEK', days)
+        if 'DRUNK_DR' in f_values:
+            self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'DRUNK_DR')
 
     def get_years_timeline(self):
         """
@@ -108,6 +111,9 @@ class DataProcessing:
 
     def filter_columns(self, df, column_name, values):
         return df.loc[(df[column_name].isin(values))]
+
+    def filter_columns_on_condition(self, df, column_name):
+        return df.loc[(df[column_name] > 0)]
 
     def get_sunburst_data(self):
         """
