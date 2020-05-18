@@ -27,8 +27,10 @@ class BarPlot:
             go.Bar(x=months_fatal_df.index, y=months_fatal_df, marker={
                 'color': months_fatal_df, 'colorscale': 'reds'})
         ])
+        fig.update_traces(marker_line_color='rgb(87, 48, 48)',
+                          marker_line_width=1)
         fig.update_layout(coloraxis_showscale=False, paper_bgcolor='rgba(0,0,0,0)', font=dict(color="#67748E"),
-                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=10, l=10), height=150,
+                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=30, l=30), height=120,
                           clickmode="event+select",
                           xaxis=dict(
                               tickmode='array',
@@ -44,8 +46,10 @@ class BarPlot:
             go.Bar(x=days_fatal_df.index, y=days_fatal_df, marker={
                 'color': days_fatal_df, 'colorscale': 'reds'})
         ])
+        fig.update_traces(marker_line_color='rgb(87, 48, 48)',
+                          marker_line_width=1)
         fig.update_layout(coloraxis_showscale=False, paper_bgcolor='rgba(0,0,0,0)', font=dict(color="#67748E"),
-                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=10, l=10), height=150,
+                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=30, l=30), height=120,
                           clickmode="event+select",
                           xaxis=dict(
                               tickmode='array',
@@ -73,8 +77,10 @@ class BarPlot:
         fig.update_yaxes(title_text="AM", secondary_y=False, dtick=1)
         fig.update_yaxes(title_text="PM", secondary_y=True, dtick=1)
 
+        fig.update_traces(marker_line_color='rgb(87, 48, 48)',
+                          marker_line_width=1)
         fig.update_layout(coloraxis_showscale=False, showlegend=False, paper_bgcolor='rgba(0,0,0,0)', font=dict(color="#67748E"),
-                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=10, l=10), height=300, barmode='relative', clickmode="event+select", xaxis={'showticklabels': False})
+                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=50, l=50), height=300, barmode='relative', clickmode="event+select", xaxis={'showticklabels': False})
 
         return fig
 
