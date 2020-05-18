@@ -1,5 +1,4 @@
 import plotly.graph_objects as go
-import plotly.express as px
 
 
 class BarPlot:
@@ -50,8 +49,8 @@ class BarPlot:
                           xaxis=dict(
                               tickmode='array',
                               tickvals=days_fatal_df.index,
-                              ticktext=['Mon', 'Tue', 'Wed',
-                                        'Thu', 'Fri', 'Sat', 'Sun']
+                              ticktext=['Sun', 'Mon', 'Tue', 'Wed',
+                                        'Thu', 'Fri', 'Sat']
                           )
                           )
         return fig
