@@ -161,7 +161,7 @@ class DataProcessing:
         return grouped_data['FATALS'].sum()
 
     @staticmethod
-    def read_data(file_name, years=[2018, 2017]):  # , 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+    def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         """
         reading data from local storage for years in years list.
         :param years: List of years to read from local file system.
