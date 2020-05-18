@@ -66,6 +66,14 @@ app.layout = html.Div(id="app-layout", children=[
                           config={
                     'displayModeBar': False
                 })
+            ], style={'marginTop': '20px'}),
+            html.Div([
+                html.Label('Filter hours'),
+                dcc.Graph(id='hours-filter', figure=barPlot.hours_bar_plot(),
+                          style={'marginLeft': '10px'},
+                          config={
+                    'displayModeBar': False
+                })
             ], style={'marginTop': '20px'})
         ])
     ], className="card"),

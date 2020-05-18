@@ -1,4 +1,5 @@
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
 class BarPlot:
@@ -53,6 +54,28 @@ class BarPlot:
                                         'Thu', 'Fri', 'Sat']
         )
         )
+        return fig
+
+    def hours_bar_plot(self):
+        hours_fatal_df = self.data.get_data_grouped_by_times('HOUR')
+        am = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        pm = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+        fig = go.Figure()
+        fig = make_subplots(specs=[[{"secondary_y": True}]])
+        fig.add_trace(go.Bar(
+            x=-hours_fatal_df[am], y=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], name='AM', customdata=hours_fatal_df[am], orientation='h', marker={
+                'color': hours_fatal_df[am], 'colorscale': 'reds'}, hovertemplate='%{y} AM: %{customdata}'), secondary_y=False)
+
+        fig.add_trace(go.Bar(
+            x=hours_fatal_df[pm], y=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], name='PM', customdata=hours_fatal_df[pm], orientation='h', marker={
+                'color': hours_fatal_df[pm], 'colorscale': 'reds'}, hovertemplate='%{y} PM: %{customdata}'), secondary_y=True)
+
+        fig.update_yaxes(title_text="AM", secondary_y=False, dtick=1)
+        fig.update_yaxes(title_text="PM", secondary_y=True, dtick=1)
+
+        fig.update_layout(coloraxis_showscale=False, showlegend=False, paper_bgcolor='rgba(0,0,0,0)', font=dict(color="#67748E"),
+                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=10, l=10), height=300, barmode='relative', clickmode="event+select", xaxis={'showticklabels': False})
+
         return fig
 
     @staticmethod
