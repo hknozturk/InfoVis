@@ -16,7 +16,7 @@ class BarPlot:
             go.Bar(name='Fatals', x=timeline_df.index,
                    y=timeline_df['FATALS'], marker_color='rgb(239,84,59)')
         ])
-        fig.update_layout(margin=dict(t=50, b=0, r=0, l=0), paper_bgcolor='rgba(0,0,0,0)',
+        fig.update_layout(margin=dict(t=50, b=0, r=10, l=0), paper_bgcolor='rgba(0,0,0,0)',
                           plot_bgcolor='rgba(0,0,0,0)', font=dict(color="#67748E"))
         return fig
 
@@ -34,7 +34,7 @@ class BarPlot:
                               tickvals=months_fatal_df.index,
                               ticktext=['Jan', 'Feb', 'Mar', 'Apr', 'May',
                                         'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                          ))
+        ))
         return fig
 
     def days_bar_plot(self):
@@ -51,8 +51,8 @@ class BarPlot:
                               tickvals=days_fatal_df.index,
                               ticktext=['Sun', 'Mon', 'Tue', 'Wed',
                                         'Thu', 'Fri', 'Sat']
-                          )
-                          )
+        )
+        )
         return fig
 
     @staticmethod

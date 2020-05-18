@@ -10,7 +10,7 @@ from components.switch_toggle import SwitchToggle
 from components.year_range_slider import YearRangeSlider
 from components.bar_plot import BarPlot
 from components.sunburst import SunburstChart
-from components.filter_data_dropdown import FilterDataDropdown
+from components.checklist_filter_attributes import ChecklistFilterAttributes
 
 # importing data_processing module
 from components.data_processing import DataProcessing
@@ -28,7 +28,7 @@ graphWithSlider = GraphWithSlider()
 listComponent = List(dataProcessing)
 switchToggle = SwitchToggle()
 sunBurst = SunburstChart(dataProcessing)
-filterDropdown = FilterDataDropdown('FATALS')
+checklist = ChecklistFilterAttributes()
 
 app = dash.Dash(__name__)
 app.index_string = custom_dash_index.indexString
@@ -46,11 +46,21 @@ app.layout = html.Div(id="app-layout", children=[
     html.Div(id='card-1', children=[
         switchToggle.generateToggle(),
         html.Div([
-            filterDropdown.generate_dropdown(),
-            html.Span('Year slider'),
-            yearSlider.year_slider(),
-            dcc.Graph(id='months-filter', figure=barPlot.months_bar_plot()),
-            dcc.Graph(id='days-filter', figure=barPlot.days_bar_plot())
+            checklist.generate_checklist(),
+            html.Div([
+                html.Label('Year slider'),
+                yearSlider.year_slider(),
+            ], style={'marginTop': '20px'}),
+            html.Div([
+                html.Label('Filter months'),
+                dcc.Graph(id='months-filter', figure=barPlot.months_bar_plot(),
+                          style={'marginLeft': '10px'})
+            ], style={'marginTop': '20px'}),
+            html.Div([
+                html.Label('Filter days'),
+                dcc.Graph(id='days-filter', figure=barPlot.days_bar_plot(),
+                          style={'marginLeft': '10px'})
+            ], style={'marginTop': '20px'})
         ])
     ], className="card"),
     html.Div(id='card-2', children=[
