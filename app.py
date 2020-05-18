@@ -10,6 +10,7 @@ from components.switch_toggle import SwitchToggle
 from components.year_range_slider import YearRangeSlider
 from components.bar_plot import BarPlot
 from components.sunburst import SunburstChart
+from components.filter_data_dropdown import FilterDataDropdown
 
 # importing data_processing module
 from components.data_processing import DataProcessing
@@ -27,6 +28,7 @@ graphWithSlider = GraphWithSlider()
 listComponent = List(dataProcessing)
 switchToggle = SwitchToggle()
 sunBurst = SunburstChart(dataProcessing)
+filterDropdown = FilterDataDropdown('FATALS')
 
 app = dash.Dash(__name__)
 app.index_string = custom_dash_index.indexString
@@ -44,6 +46,7 @@ app.layout = html.Div(id="app-layout", children=[
     html.Div(id='card-1', children=[
         switchToggle.generateToggle(),
         html.Div([
+            filterDropdown.generate_dropdown(),
             html.Span('Year slider'),
             yearSlider.year_slider()
         ])
