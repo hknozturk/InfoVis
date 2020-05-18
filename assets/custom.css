@@ -36,6 +36,13 @@ small {
   font-size: 14px;
 }
 
+label {
+  font-size: 14px;
+  margin-left: 12px;
+  color: #67748e;
+  font-weight: 600;
+}
+
 /*
 * Main view (app.py) style
 */
