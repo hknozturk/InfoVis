@@ -49,7 +49,8 @@ app.layout = html.Div(id="app-layout", children=[
             filterDropdown.generate_dropdown(),
             html.Span('Year slider'),
             yearSlider.year_slider(),
-            dcc.Graph(id='months-filter', figure=barPlot.months_bar_plot())
+            dcc.Graph(id='months-filter', figure=barPlot.months_bar_plot()),
+            dcc.Graph(id='days-filter', figure=barPlot.days_bar_plot())
         ])
     ], className="card"),
     html.Div(id='card-2', children=[
