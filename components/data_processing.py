@@ -73,10 +73,11 @@ class DataProcessing:
             [counties_df, self.counties_names_df], axis=1, join="inner")
         return counties_df
 
-    def filter_data(self, selected_years):
+    def filter_data(self, selected_years, months):
         """
         updating filter_accident_df with range in selected_years.
         :param selected_years: List of years range from range slider.
+        :param months: List of month selected on month bar chart filter.
         """
         years_list = list(range(selected_years[0], selected_years[1] + 1))
         self.year_range = years_list
@@ -84,8 +85,12 @@ class DataProcessing:
             self.accident_df['YEAR'].isin(years_list))]
         self.filter_person_df = self.person_df.loc[(
             self.person_df['YEAR'].isin(years_list))]
-        self.filter_vehicle_df = self.vehicle_df.loc[(
-            self.vehicle_df['YEAR'].isin(years_list))]
+        # self.filter_vehicle_df = self.vehicle_df.loc[(
+        #     self.vehicle_df['YEAR'].isin(years_list))]
+
+        if months:
+            self.filter_accident_df = self.filter_columns(self.filter_accident_df, 'MONTH', months)
+            self.filter_person_df = self.filter_columns(self.filter_person_df, 'MONTH', months)
 
     def get_years_timeline(self):
         """
@@ -97,6 +102,9 @@ class DataProcessing:
             'FATALS'].sum()
         timeline_df['PERSONS'] = self.filter_person_df['YEAR'].value_counts()
         return timeline_df
+
+    def filter_columns(self, df, column_name, values):
+        return df.loc[(df[column_name].isin(values))]
 
     def get_sunburst_data(self):
         """
@@ -135,10 +143,10 @@ class DataProcessing:
         population_sums = states[map(str, self.year_range)].sum(axis=1)
         states['NumberOfAccidents'] = grouped_states.size()
         states['AccidentsPerMil'] = grouped_states.size() * 1000000 / \
-            population_sums
+                                    population_sums
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
         states['DeathsPerMil'] = grouped_states['FATALS'].sum() * 1000000 / \
-            population_sums
+                                 population_sums
         states['AvgArrivalTime'] = grouped_states['RESPONSE_TIME'].mean()
         states['AvgHospitalArrivalTime'] = grouped_states['HOSP_ARR_TIME'].mean()
         states.fillna(0, inplace=True)
@@ -150,7 +158,7 @@ class DataProcessing:
         return grouped_data['FATALS'].sum()
 
     @staticmethod
-    def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+    def read_data(file_name, years=[2018, 2017]):  # , 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         """
         reading data from local storage for years in years list.
         :param years: List of years to read from local file system.
@@ -185,7 +193,7 @@ class DataProcessing:
                           filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
 
         filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
-            filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
         dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
@@ -206,13 +214,13 @@ class DataProcessing:
             (dataFrame['ARR_HOUR'].isin(hour_range)) &
             (dataFrame['HOSP_MN'].isin(min_range)) &
             (dataFrame['HOSP_HR'].isin(hour_range))
-        ]
+            ]
 
         filter_times.loc[(filter_times['ARR_HOUR'] >
                           filter_times['HOSP_HR']), 'HOSP_HR'] = 24
 
         filter_times['HOSP_ARR_TIME'] = (filter_times['HOSP_HR'] - filter_times['ARR_HOUR']) * 60 + (
-            filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
+                filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
 
         dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"

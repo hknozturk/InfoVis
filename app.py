@@ -81,19 +81,29 @@ app.layout = html.Div(id="app-layout", children=[
      Output('sunburst', 'figure'),
      Output('list-component', 'children')],
     [Input('year-range-slider', 'value'),
+     Input('months-filter', 'selectedData'),
      Input('map', 'selectedData'),
      Input('dark-mode-toggle', 'on'),
      Input('sort-list', 'value')]
 )
-def update_figure(selected_years, selected_data, dark_mode, list_sort_value):
-    dataProcessing.filter_data(selected_years)
-    if selected_data is None:
-        return [plotlyMap.draw_map(dark_theme=dark_mode), barPlot.timeline_bar_plot(),
-                sunBurst.draw_pie(), listComponent.generateList(list_sort_value, dark_mode)]
-    else:
+def update_figure(selected_years, s_months, selected_data, dark_mode, list_sort_value):
+    # print(s_months)
+    # dataProcessing.filter_data(selected_years)
+    # if selected_data is None and s_months is None:
+    #     return [plotlyMap.draw_map(dark_theme=dark_mode), barPlot.timeline_bar_plot(),
+    #             sunBurst.draw_pie(), listComponent.generateList(list_sort_value, dark_mode)]
+    # else:
+    state_ids = []
+    months = []
+    if selected_data:
         state_ids = plotlyMap.retrieve_selected_states(selected_data)
-        return [plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), barPlot.timeline_bar_plot(),
-                sunBurst.draw_pie(), listComponent.generateList(list_sort_value, dark_mode)]
+    if s_months:
+        months = barPlot.retrieve_selected_months(s_months)
+
+    dataProcessing.filter_data(selected_years, months)
+
+    return [plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), barPlot.timeline_bar_plot(),
+            sunBurst.draw_pie(), listComponent.generateList(list_sort_value, dark_mode)]
 
 
 @app.callback(

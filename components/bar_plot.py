@@ -33,7 +33,24 @@ class BarPlot:
                               tickvals=months_fatal_df.index,
                               ticktext=['Jan', 'Feb', 'Mar', 'Apr', 'May',
                                         'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                          )
+                          ),
+                          clickmode="event+select"
                           )
 
         return fig
+
+    @staticmethod
+    def retrieve_selected_months(months_data):
+        """
+        return list of selected months.
+        :param months_data: List of points that is selected on months bar chart.
+        """
+        selected_months = []
+        points = months_data.get('points')
+
+        for point in points:
+            month_number = point.get('x')
+            selected_months.append(month_number)
+
+        print(selected_months)
+        return selected_months
