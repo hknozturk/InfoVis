@@ -90,10 +90,13 @@ class DataProcessing:
         #     self.vehicle_df['YEAR'].isin(years_list))]
 
         if months:
-            self.filter_accident_df = self.filter_columns(self.filter_accident_df, 'MONTH', months)
-            self.filter_person_df = self.filter_columns(self.filter_person_df, 'MONTH', months)
+            self.filter_accident_df = self.filter_columns(
+                self.filter_accident_df, 'MONTH', months)
+            self.filter_person_df = self.filter_columns(
+                self.filter_person_df, 'MONTH', months)
         if days:
-            self.filter_accident_df = self.filter_columns(self.filter_accident_df, 'DAY_WEEK', days)
+            self.filter_accident_df = self.filter_columns(
+                self.filter_accident_df, 'DAY_WEEK', days)
             # self.filter_person_df = self.filter_columns(self.filter_person_df, 'DAY_WEEK', days)
         if 'DRUNK_DR' in f_values:
             self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'DRUNK_DR')
@@ -152,10 +155,10 @@ class DataProcessing:
         population_sums = states[map(str, self.year_range)].sum(axis=1)
         states['NumberOfAccidents'] = grouped_states.size()
         states['AccidentsPerMil'] = grouped_states.size() * 1000000 / \
-                                    population_sums
+            population_sums
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
         states['DeathsPerMil'] = grouped_states['FATALS'].sum() * 1000000 / \
-                                 population_sums
+            population_sums
         states['AvgArrivalTime'] = grouped_states['RESPONSE_TIME'].mean()
         states['AvgHospitalArrivalTime'] = grouped_states['HOSP_ARR_TIME'].mean()
         states.fillna(0, inplace=True)
@@ -164,7 +167,11 @@ class DataProcessing:
 
     def get_data_grouped_by_times(self, group_by_value):
         grouped_data = self.filter_accident_df.groupby([group_by_value])
-        return grouped_data['FATALS'].sum()
+
+        if group_by_value == 'HOUR':
+            return grouped_data['FATALS'].sum().drop([99])
+        else:
+            return grouped_data['FATALS'].sum()
 
     @staticmethod
     def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
@@ -202,7 +209,7 @@ class DataProcessing:
                           filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
 
         filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
-                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+            filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
         dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
@@ -223,13 +230,13 @@ class DataProcessing:
             (dataFrame['ARR_HOUR'].isin(hour_range)) &
             (dataFrame['HOSP_MN'].isin(min_range)) &
             (dataFrame['HOSP_HR'].isin(hour_range))
-            ]
+        ]
 
         filter_times.loc[(filter_times['ARR_HOUR'] >
                           filter_times['HOSP_HR']), 'HOSP_HR'] = 24
 
         filter_times['HOSP_ARR_TIME'] = (filter_times['HOSP_HR'] - filter_times['ARR_HOUR']) * 60 + (
-                filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
+            filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
 
         dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
