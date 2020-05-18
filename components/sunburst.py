@@ -1,5 +1,6 @@
 import plotly.express as px
 
+
 class SunburstChart:
 
     def __init__(self, data_processing):
@@ -9,5 +10,7 @@ class SunburstChart:
         df = self.data.get_sunburst_data()
         fig = px.sunburst(df, path=['WEATHER', 'HARM_EV'], values='FATALS', color='FATALS',
                           color_continuous_scale='reds')
-        fig.update_layout(margin=dict(t=10, b=10, r=0, l=0))
+        fig.update_layout(margin=dict(t=10, b=10, r=0, l=0),
+                          coloraxis_showscale=False, paper_bgcolor='rgba(0,0,0,0)',
+                          plot_bgcolor='rgba(0,0,0,0)'),
         return fig
