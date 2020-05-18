@@ -56,16 +56,16 @@ class BarPlot:
         return fig
 
     @staticmethod
-    def retrieve_selected_months(months_data):
+    def retrieve_selected_barchart_item(selected_data):
         """
-        return list of selected months.
-        :param months_data: List of points that is selected on months bar chart.
+        return list of selected bar in bar chart.
+        :param selected_data: List of points that is selected on bar chart.
         """
-        selected_months = []
-        points = months_data.get('points')
+        selected_items = []
+        points = selected_data.get('points')
 
         for point in points:
-            month_number = point.get('x')
-            selected_months.append(month_number)
+            item = point.get('x')
+            selected_items.append(item)
 
-        return selected_months
+        return selected_items

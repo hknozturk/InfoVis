@@ -73,7 +73,7 @@ class DataProcessing:
             [counties_df, self.counties_names_df], axis=1, join="inner")
         return counties_df
 
-    def filter_data(self, selected_years, months):
+    def filter_data(self, selected_years, months, days):
         """
         updating filter_accident_df with range in selected_years.
         :param selected_years: List of years range from range slider.
@@ -91,6 +91,9 @@ class DataProcessing:
         if months:
             self.filter_accident_df = self.filter_columns(self.filter_accident_df, 'MONTH', months)
             self.filter_person_df = self.filter_columns(self.filter_person_df, 'MONTH', months)
+        if days:
+            self.filter_accident_df = self.filter_columns(self.filter_accident_df, 'DAY_WEEK', days)
+            # self.filter_person_df = self.filter_columns(self.filter_person_df, 'DAY_WEEK', days)
 
     def get_years_timeline(self):
         """

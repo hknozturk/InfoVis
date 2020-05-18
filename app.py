@@ -83,11 +83,12 @@ app.layout = html.Div(id="app-layout", children=[
      Output('list-component', 'children')],
     [Input('year-range-slider', 'value'),
      Input('months-filter', 'selectedData'),
+     Input('days-filter', 'selectedData'),
      Input('map', 'selectedData'),
      Input('dark-mode-toggle', 'on'),
      Input('sort-list', 'value')]
 )
-def update_figure(selected_years, s_months, selected_data, dark_mode, list_sort_value):
+def update_figure(selected_years, s_months, s_days, selected_data, dark_mode, list_sort_value):
     # print(s_months)
     # dataProcessing.filter_data(selected_years)
     # if selected_data is None and s_months is None:
@@ -96,12 +97,15 @@ def update_figure(selected_years, s_months, selected_data, dark_mode, list_sort_
     # else:
     state_ids = []
     months = []
+    days = []
     if selected_data:
         state_ids = plotlyMap.retrieve_selected_states(selected_data)
     if s_months:
-        months = barPlot.retrieve_selected_months(s_months)
+        months = barPlot.retrieve_selected_barchart_item(s_months)
+    if s_days:
+        days = barPlot.retrieve_selected_barchart_item(s_days)
 
-    dataProcessing.filter_data(selected_years, months)
+    dataProcessing.filter_data(selected_years, months, days)
 
     return [plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), barPlot.timeline_bar_plot(),
             sunBurst.draw_pie(), listComponent.generateList(list_sort_value, dark_mode)]
