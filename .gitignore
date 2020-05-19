@@ -130,5 +130,6 @@ dmypy.json
 
 # Personal Folder and Files
 .DS_Store
+/data
 .vscode
 /datasets
