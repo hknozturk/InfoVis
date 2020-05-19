@@ -164,13 +164,13 @@ class DataProcessing:
         grouped_states = self.filter_accident_df.groupby(['STATE'])
         population_sums = states[map(str, self.year_range)].sum(axis=1)
         states['NumberOfAccidents'] = grouped_states.size()
-        states['AccidentsPerMil'] = grouped_states.size() * 1000000 / \
-                                    population_sums
+        states['AccidentsPerMil'] = round(grouped_states.size() * 1000000 / \
+                                    population_sums, 2)
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
-        states['DeathsPerMil'] = grouped_states['FATALS'].sum() * 1000000 / \
-                                 population_sums
-        states['AvgArrivalTime'] = grouped_states['RESPONSE_TIME'].mean()
-        states['AvgHospitalArrivalTime'] = grouped_states['HOSP_ARR_TIME'].mean()
+        states['DeathsPerMil'] = round(grouped_states['FATALS'].sum() * 1000000 / \
+                                 population_sums, 2)
+        states['AvgArrivalTime'] = round(grouped_states['RESPONSE_TIME'].mean(), 2)
+        states['AvgHospitalArrivalTime'] = round(grouped_states['HOSP_ARR_TIME'].mean(), 2)
         states.fillna(0, inplace=True)
         if sort_by:
             return states.sort_values(by=[sort_by], ascending=False)
