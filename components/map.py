@@ -18,7 +18,8 @@ class PlotlyMap:
             color_continuous_scale='Reds',
             locationmode='USA-states',
             hover_name='Name',
-            hover_data=['NumberOfDeaths', 'DeathsPerMil', 'NumberOfAccidents', 'AvgArrivalTime', 'AvgHospitalArrivalTime']
+            hover_data=['NumberOfDeaths', 'DeathsPerMil',
+                        'NumberOfAccidents', 'AvgArrivalTime', 'AvgHospitalArrivalTime']
         ))
 
         self.set_layout(fig, dark_theme)
