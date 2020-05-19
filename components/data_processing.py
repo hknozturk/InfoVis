@@ -44,6 +44,7 @@ class DataProcessing:
 
         self.year_range = [2010, 2011, 2012,
                            2013, 2014, 2015, 2016, 2017, 2018]
+        self.total_deaths = self.filter_accident_df.groupby(['STATE'])['FATALS'].sum()
 
     def get_states_data(self):
         """
@@ -90,6 +91,7 @@ class DataProcessing:
         # self.filter_vehicle_df = self.vehicle_df.loc[(
         #     self.vehicle_df['YEAR'].isin(years_list))]
 
+        self.total_deaths = self.filter_accident_df.groupby(['STATE'])['FATALS'].sum()
         # bar chart filters
         if months:
             self.filter_accident_df = self.filter_columns(
@@ -171,6 +173,8 @@ class DataProcessing:
                                  population_sums, 2)
         states['AvgArrivalTime'] = round(grouped_states['RESPONSE_TIME'].mean(), 2)
         states['AvgHospitalArrivalTime'] = round(grouped_states['HOSP_ARR_TIME'].mean(), 2)
+        states['Total_deaths'] = self.total_deaths
+        states['Percentage'] = round((states['NumberOfDeaths']/states['Total_deaths'])*100, 2)
         states.fillna(0, inplace=True)
         if sort_by:
             return states.sort_values(by=[sort_by], ascending=False)
