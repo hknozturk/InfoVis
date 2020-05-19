@@ -27,7 +27,6 @@ class DataProcessing:
             home_directory + 'counties.csv', index_col='fips')
         self.counties_names_df.index = self.counties_names_df.index.map(
             "{:05}".format)
-
         # Warning accident_df has original copy of data don't change it
         # use filter_accident_df for showing and updating data.
         self.accident_df = self.read_data('ACCIDENT_n')
@@ -35,13 +34,13 @@ class DataProcessing:
 
         # Warning person_df has original copy of data don't change it
         # use filter_person_df for showing and updating data.
-        self.person_df = self.read_data('PERSON')
-        self.filter_person_df = self.person_df
+        # self.person_df = self.read_data('PERSON')
+        # self.filter_person_df = self.person_df
 
         # Warning vehicle_df has original copy of data don't change it
         # use filter_vehicle_df for showing and updating data.
-        self.vehicle_df = self.read_data('VEHICLE')
-        self.filter_vehicle_df = self.vehicle_df
+        # self.vehicle_df = self.read_data('VEHICLE')
+        # self.filter_vehicle_df = self.vehicle_df
 
         self.year_range = [2010, 2011, 2012,
                            2013, 2014, 2015, 2016, 2017, 2018]
@@ -85,8 +84,8 @@ class DataProcessing:
         self.year_range = years_list
         self.filter_accident_df = self.accident_df.loc[(
             self.accident_df['YEAR'].isin(years_list))]
-        self.filter_person_df = self.person_df.loc[(
-            self.person_df['YEAR'].isin(years_list))]
+        # self.filter_person_df = self.person_df.loc[(
+        #     self.person_df['YEAR'].isin(years_list))]
         # self.filter_vehicle_df = self.vehicle_df.loc[(
         #     self.vehicle_df['YEAR'].isin(years_list))]
 
@@ -94,15 +93,15 @@ class DataProcessing:
         if months:
             self.filter_accident_df = self.filter_columns(
                 self.filter_accident_df, 'MONTH', months)
-            self.filter_person_df = self.filter_columns(
-                self.filter_person_df, 'MONTH', months)
+            # self.filter_person_df = self.filter_columns(
+            #     self.filter_person_df, 'MONTH', months)
         if days:
             self.filter_accident_df = self.filter_columns(
                 self.filter_accident_df, 'DAY_WEEK', days)
         if hours:
             self.filter_accident_df = self.filter_columns(self.filter_accident_df, 'HOUR', hours)
 
-        #check box filters
+        # check box filters
         if 'DRUNK_DR' in f_values:
             self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'DRUNK_DR')
         if 'L_STATUS' in f_values:
@@ -182,7 +181,7 @@ class DataProcessing:
             return grouped_data['FATALS'].sum()
 
     @staticmethod
-    def read_data(file_name, years=[2018, 2017]):#, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+    def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         """
         reading data from local storage for years in years list.
         :param years: List of years to read from local file system.
@@ -191,14 +190,13 @@ class DataProcessing:
         a_df = pd.DataFrame()
         for year in years:
             path = home_directory + str(year) + "/" + file_name + ".CSV"
-            temp_df = pd.read_csv(path, encoding='iso-8859-1')
-            if 'YEAR' not in temp_df.columns:
-                temp_df['YEAR'] = year
+            temp_df = pd.read_csv(path)
             a_df = a_df.append(temp_df, ignore_index=True)
         return a_df
 
     # method to add columns from person and vehicle file to accident
-    def update_accident(self, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+    @staticmethod
+    def update_accident(years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         for year in years:
             path = home_directory + str(year) + "/" + 'ACCIDENT_n' + ".CSV"
             a_df = pd.read_csv(path, encoding='iso-8859-1', index_col='ST_CASE')
@@ -220,6 +218,21 @@ class DataProcessing:
             path = home_directory + str(year) + "/" + 'ACCIDENT_n' + ".CSV"
             a_df.to_csv(path)
             #
+            print(a_df.shape)
+
+    @staticmethod
+    def remove_extra_column(years=[2010]):
+        for year in years:
+            path = home_directory + str(year) + "/" + 'ACCIDENT_n' + ".CSV"
+            a_df = pd.read_csv(path, encoding='iso-8859-1', index_col='ST_CASE')
+            a_df.drop(['Unnamed: 0', 'VE_TOTAL', 'VE_FORMS',
+                       #'PVH_INVL', 'PEDS', 'PERNOTMVIT', 'PERMVIT',
+                       'PERSONS', 'CITY', 'DAY', 'MINUTE', 'NHS',
+                       #'RUR_URB', 'FUNC_SYS', 'RD_OWNER',
+                       'ROUTE', 'TWAY_ID', 'TWAY_ID2', 'MILEPT', 'LATITUDE', 'LONGITUD', 'SP_JUR', 'MAN_COLL', 'RELJCT1',
+                       'RELJCT2', 'TYP_INT', 'REL_ROAD', 'LGT_COND', 'WEATHER1', 'WEATHER2', 'SCH_BUS', 'RAIL', 'NOT_HOUR',
+                       'NOT_MIN', 'ARR_HOUR', 'ARR_MIN', 'HOSP_HR', 'HOSP_MN', 'CF1', 'CF2', 'CF3'], axis=1, inplace=True)
+            a_df.to_csv(path)
             print(a_df.shape)
 
     @staticmethod
