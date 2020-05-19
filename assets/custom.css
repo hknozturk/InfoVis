@@ -10,10 +10,8 @@ body {
 * Light / Dark Theme
 */
 .dark-mode-toggle {
-  margin-left: auto;
   padding: 10px;
   width: 120px;
-  margin-right: 16px;
 }
 
 :root {

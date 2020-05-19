@@ -44,7 +44,11 @@ server = app.server
 
 app.layout = html.Div(id="app-layout", children=[
     html.Div(id='card-1', children=[
-        switchToggle.generateToggle(),
+        html.Div([
+            html.Img(src="./assets/logo.png",
+                     style={'height': '36px', 'marginLeft': '20px'}),
+            switchToggle.generateToggle(),
+        ], style={'display': 'flex', 'alignItems': 'center', 'justifyContent': 'space-around'}),
         html.Div([
             checklist.generate_checklist(),
             html.Div([
