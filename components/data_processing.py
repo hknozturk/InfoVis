@@ -50,8 +50,9 @@ class DataProcessing:
         get the number of fatalities per state for all us states.
         """
         deaths = self.filter_accident_df.groupby(['STATE'])['FATALS'].sum()
-        states_df = pd.concat(
-            [self.state_names_populations_df, deaths], axis=1)
+        states_df = pd.concat([self.state_names_populations_df, deaths], axis=1)
+        # total = self.accident_df.loc[(self.accident_df['YEAR'].isin(self.year_range))].groupby(['STATE'])['FATALS'].sum()
+        # states_df['TOTAL_FATALS'] = total
         return states_df
 
     def get_selected_state_data(self, selected_states):
@@ -171,8 +172,9 @@ class DataProcessing:
         states['AvgArrivalTime'] = grouped_states['RESPONSE_TIME'].mean()
         states['AvgHospitalArrivalTime'] = grouped_states['HOSP_ARR_TIME'].mean()
         states.fillna(0, inplace=True)
-
-        return states.sort_values(by=[sort_by], ascending=False)
+        if sort_by:
+            return states.sort_values(by=[sort_by], ascending=False)
+        return states
 
     def get_data_grouped_by_times(self, group_by_value):
         grouped_data = self.filter_accident_df.groupby([group_by_value])

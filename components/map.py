@@ -10,15 +10,15 @@ class PlotlyMap:
     def draw_map(self, selected_states=[], dark_theme=False):
         if selected_states:
             return self.draw_counties_map(selected_states, dark_theme)
-        states_df = self.data.get_states_data()
+        states_df = self.data.get_accident_data_ordered_by_states(None)
         fig = go.Figure(data=px.choropleth(
             states_df,
             locations='Code',
-            color='FATALS',
+            color='NumberOfDeaths',
             color_continuous_scale='Reds',
             locationmode='USA-states',
             hover_name='Name',
-            hover_data=['FATALS']
+            hover_data=['NumberOfDeaths', 'DeathsPerMil', 'NumberOfAccidents', 'AvgArrivalTime', 'AvgHospitalArrivalTime']
         ))
 
         self.set_layout(fig, dark_theme)
