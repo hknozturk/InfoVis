@@ -37,7 +37,7 @@ class BarPlot:
                               tickvals=months_fatal_df.index,
                               ticktext=['Jan', 'Feb', 'Mar', 'Apr', 'May',
                                         'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        ))
+                          ))
         return fig
 
     def days_bar_plot(self):
@@ -56,8 +56,8 @@ class BarPlot:
                               tickvals=days_fatal_df.index,
                               ticktext=['Sun', 'Mon', 'Tue', 'Wed',
                                         'Thu', 'Fri', 'Sat']
-        )
-        )
+                          )
+                          )
         return fig
 
     def hours_bar_plot(self):
@@ -67,20 +67,26 @@ class BarPlot:
         fig = go.Figure()
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         fig.add_trace(go.Bar(
-            x=-hours_fatal_df[am], y=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], name='AM', customdata=hours_fatal_df[am], orientation='h', marker={
-                'color': hours_fatal_df[am], 'colorscale': 'reds'}, hovertemplate='%{y} AM: %{customdata}'), secondary_y=False)
+            x=-hours_fatal_df[am], y=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], name='AM', customdata=hours_fatal_df[am],
+            orientation='h', marker={
+                'color': hours_fatal_df[am], 'colorscale': 'reds'}, hovertemplate='%{y} AM: %{customdata}'),
+            secondary_y=False)
 
         fig.add_trace(go.Bar(
-            x=hours_fatal_df[pm], y=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], name='PM', customdata=hours_fatal_df[pm], orientation='h', marker={
-                'color': hours_fatal_df[pm], 'colorscale': 'reds'}, hovertemplate='%{y} PM: %{customdata}'), secondary_y=True)
+            x=hours_fatal_df[pm], y=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], name='PM', customdata=hours_fatal_df[pm],
+            orientation='h', marker={
+                'color': hours_fatal_df[pm], 'colorscale': 'reds'}, hovertemplate='%{y} PM: %{customdata}'),
+            secondary_y=True)
 
         fig.update_yaxes(title_text="AM", secondary_y=False, dtick=1)
         fig.update_yaxes(title_text="PM", secondary_y=True, dtick=1)
 
         fig.update_traces(marker_line_color='rgb(87, 48, 48)',
                           marker_line_width=1)
-        fig.update_layout(coloraxis_showscale=False, showlegend=False, paper_bgcolor='rgba(0,0,0,0)', font=dict(color="#67748E"),
-                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=50, l=50), height=300, barmode='relative', clickmode="event+select", xaxis={'showticklabels': False})
+        fig.update_layout(coloraxis_showscale=False, showlegend=False, paper_bgcolor='rgba(0,0,0,0)',
+                          font=dict(color="#67748E"),
+                          plot_bgcolor='rgba(0,0,0,0)', margin=dict(t=10, b=0, r=50, l=50), height=300,
+                          barmode='relative', clickmode="event+select", xaxis={'showticklabels': False})
 
         return fig
 
@@ -95,6 +101,23 @@ class BarPlot:
 
         for point in points:
             item = point.get('x')
+            selected_items.append(item)
+
+        return selected_items
+
+    @staticmethod
+    def retrieve_selected_hours(selected_data):
+        """
+        return list of selected bar in bar chart.
+        :param selected_data: List of points that is selected on bar chart.
+        """
+        selected_items = []
+        points = selected_data.get('points')
+
+        for point in points:
+            item = point.get('pointIndex')
+            if point.get('curveNumber') is 1:
+                item += 12
             selected_items.append(item)
 
         return selected_items

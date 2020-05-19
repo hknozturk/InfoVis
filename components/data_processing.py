@@ -72,12 +72,13 @@ class DataProcessing:
             [counties_df, self.counties_names_df], axis=1, join="inner")
         return counties_df
 
-    def filter_data(self, selected_years, months, days, f_values):
+    def filter_data(self, selected_years, months, days, hours, f_values):
         """
         updating filter_accident_df with range in selected_years.
         :param selected_years: List of years range from range slider.
         :param months: List of month selected on month bar chart filter.
         :param days: List of days selected on day bar chart filter.
+        :param hours: List of hours selected on hour bar chart filter.
         :param f_values: List of check boxes filter selected in filter checkboxes.
         """
         years_list = list(range(selected_years[0], selected_years[1] + 1))
@@ -89,6 +90,7 @@ class DataProcessing:
         # self.filter_vehicle_df = self.vehicle_df.loc[(
         #     self.vehicle_df['YEAR'].isin(years_list))]
 
+        # bar chart filters
         if months:
             self.filter_accident_df = self.filter_columns(
                 self.filter_accident_df, 'MONTH', months)
@@ -97,7 +99,10 @@ class DataProcessing:
         if days:
             self.filter_accident_df = self.filter_columns(
                 self.filter_accident_df, 'DAY_WEEK', days)
-            # self.filter_person_df = self.filter_columns(self.filter_person_df, 'DAY_WEEK', days)
+        if hours:
+            self.filter_accident_df = self.filter_columns(self.filter_accident_df, 'HOUR', hours)
+
+        #check box filters
         if 'DRUNK_DR' in f_values:
             self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'DRUNK_DR')
         if 'L_STATUS' in f_values:

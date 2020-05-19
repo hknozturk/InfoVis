@@ -108,24 +108,29 @@ app.layout = html.Div(id="app-layout", children=[
     [Input('year-range-slider', 'value'),
      Input('months-filter', 'selectedData'),
      Input('days-filter', 'selectedData'),
+     Input('hours-filter', 'selectedData'),
      Input('check_box', 'value'),
      Input('map', 'selectedData'),
      Input('dark-mode-toggle', 'on'),
      Input('sort-list', 'value')]
 )
-def update_figure(selected_years, s_months, s_days, f_values, selected_data, dark_mode, list_sort_value):
+def update_figure(selected_years, s_months, s_days, s_hours, f_values, selected_data, dark_mode, list_sort_value):
     # print(f_values)
     state_ids = []
     months = []
     days = []
+    hours = []
     if selected_data:
         state_ids = plotlyMap.retrieve_selected_states(selected_data)
     if s_months:
         months = barPlot.retrieve_selected_barchart_item(s_months)
     if s_days:
         days = barPlot.retrieve_selected_barchart_item(s_days)
+    if s_hours:
+        hours = barPlot.retrieve_selected_hours(s_hours)
+        print(hours)
 
-    dataProcessing.filter_data(selected_years, months, days, f_values)
+    dataProcessing.filter_data(selected_years, months, days, hours, f_values)
 
     return [plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), barPlot.timeline_bar_plot(),
             sunBurst.draw_pie(), listComponent.generateList(list_sort_value, dark_mode)]
