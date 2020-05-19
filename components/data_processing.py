@@ -108,6 +108,8 @@ class DataProcessing:
             self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'L_STATUS')
         if 'SPEEDREL' in f_values:
             self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'SPEEDREL')
+        if 'WRK_ZONE' in f_values:
+            self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'WRK_ZONE')
 
     def get_years_timeline(self):
         """
