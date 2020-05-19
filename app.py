@@ -1,6 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_daq as daq
 from dash.dependencies import Input, Output
 from components.map import PlotlyMap
 from components.graph_with_slider import GraphWithSlider
@@ -82,6 +83,8 @@ app.layout = html.Div(id="app-layout", children=[
         ])
     ], className="card"),
     html.Div(id='card-2', children=[
+        daq.BooleanSwitch(id='map-toggle', on=False,
+                          label=['Total', 'Per 1M'], color="#E4480E", className="map-toggle"),
         dcc.Graph(figure=plotlyMap.draw_map(),
                   id='map',
                   style={'width': '100%', 'height': '100%'})

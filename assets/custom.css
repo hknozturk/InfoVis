@@ -14,6 +14,11 @@ body {
   width: 120px;
 }
 
+.map-toggle {
+  padding: 10px;
+  width: 150px;
+}
+
 :root {
   --background: rgb(199, 199, 199);
   --secondary-background: rgb(255, 255, 255);
