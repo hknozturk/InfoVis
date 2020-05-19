@@ -7,14 +7,17 @@ class PlotlyMap:
     def __init__(self, data_processing):
         self.data = data_processing
 
-    def draw_map(self, selected_states=[], dark_theme=False):
+    def draw_map(self, selected_states=[], dark_theme=False, check=False):
+        color_scale = 'NumberOfDeaths'
+        if check:
+            color_scale = 'DeathsPerMil'
         if selected_states:
             return self.draw_counties_map(selected_states, dark_theme)
         states_df = self.data.get_accident_data_ordered_by_states(None)
         fig = go.Figure(data=px.choropleth(
             states_df,
             locations='Code',
-            color='NumberOfDeaths',
+            color=color_scale,
             color_continuous_scale='Reds',
             locationmode='USA-states',
             hover_name='Name',

@@ -119,9 +119,10 @@ app.layout = html.Div(id="app-layout", children=[
      Input('check_box', 'value'),
      Input('map', 'selectedData'),
      Input('dark-mode-toggle', 'on'),
-     Input('sort-list', 'value')]
+     Input('sort-list', 'value'),
+     Input('map-toggle', 'on')]
 )
-def update_figure(selected_years, s_months, s_days, s_hours, f_values, selected_data, dark_mode, list_sort_value):
+def update_figure(selected_years, s_months, s_days, s_hours, f_values, selected_data, dark_mode, list_sort_value, check):
     # print(f_values)
     state_ids = []
     months = []
@@ -139,7 +140,7 @@ def update_figure(selected_years, s_months, s_days, s_hours, f_values, selected_
 
     dataProcessing.filter_data(selected_years, months, days, hours, f_values)
 
-    return [plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode), barPlot.timeline_bar_plot(),
+    return [plotlyMap.draw_map(selected_states=state_ids, dark_theme=dark_mode, check=check), barPlot.timeline_bar_plot(),
             sunBurst.draw_pie(), listComponent.generateList(list_sort_value, dark_mode)]
 
 
