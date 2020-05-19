@@ -107,9 +107,8 @@ class DataProcessing:
         """
         timeline_df = pd.DataFrame()
         timeline_df['ACCIDENT'] = self.filter_accident_df['YEAR'].value_counts()
-        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])[
-            'FATALS'].sum()
-        timeline_df['PERSONS'] = self.filter_person_df['YEAR'].value_counts()
+        timeline_df['FATALS'] = self.filter_accident_df.groupby(['YEAR'])['FATALS'].sum()
+        timeline_df['PERSONS'] = self.filter_accident_df.groupby('YEAR')['person_count'].sum()
         return timeline_df
 
     def filter_columns(self, df, column_name, values):
@@ -155,10 +154,10 @@ class DataProcessing:
         population_sums = states[map(str, self.year_range)].sum(axis=1)
         states['NumberOfAccidents'] = grouped_states.size()
         states['AccidentsPerMil'] = grouped_states.size() * 1000000 / \
-            population_sums
+                                    population_sums
         states['NumberOfDeaths'] = grouped_states['FATALS'].sum()
         states['DeathsPerMil'] = grouped_states['FATALS'].sum() * 1000000 / \
-            population_sums
+                                 population_sums
         states['AvgArrivalTime'] = grouped_states['RESPONSE_TIME'].mean()
         states['AvgHospitalArrivalTime'] = grouped_states['HOSP_ARR_TIME'].mean()
         states.fillna(0, inplace=True)
@@ -188,7 +187,6 @@ class DataProcessing:
                 temp_df['YEAR'] = year
             a_df = a_df.append(temp_df, ignore_index=True)
         return a_df
-
 
     # method to add columns from person and vehicle file to accident
     def update_accident(self, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
@@ -235,7 +233,7 @@ class DataProcessing:
                           filter_times['ARR_HOUR']), 'ARR_HOUR'] = 24
 
         filter_times['RESPONSE_TIME'] = (filter_times['ARR_HOUR'] - filter_times['NOT_HOUR']) * 60 + (
-            filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
+                filter_times['ARR_MIN'] - filter_times['NOT_MIN'])
 
         dataFrame['RESPONSE_TIME'] = filter_times['RESPONSE_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
@@ -256,13 +254,13 @@ class DataProcessing:
             (dataFrame['ARR_HOUR'].isin(hour_range)) &
             (dataFrame['HOSP_MN'].isin(min_range)) &
             (dataFrame['HOSP_HR'].isin(hour_range))
-        ]
+            ]
 
         filter_times.loc[(filter_times['ARR_HOUR'] >
                           filter_times['HOSP_HR']), 'HOSP_HR'] = 24
 
         filter_times['HOSP_ARR_TIME'] = (filter_times['HOSP_HR'] - filter_times['ARR_HOUR']) * 60 + (
-            filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
+                filter_times['HOSP_MN'] - filter_times['ARR_MIN'])
 
         dataFrame['HOSP_ARR_TIME'] = filter_times['HOSP_ARR_TIME']
         path = home_directory + str(year) + "/" + file_name + "_n.CSV"
