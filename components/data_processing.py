@@ -189,6 +189,32 @@ class DataProcessing:
             a_df = a_df.append(temp_df, ignore_index=True)
         return a_df
 
+
+    # method to add columns from person and vehicle file to accident
+    def update_accident(self, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+        for year in years:
+            path = home_directory + str(year) + "/" + 'ACCIDENT_n' + ".CSV"
+            a_df = pd.read_csv(path, encoding='iso-8859-1', index_col='ST_CASE')
+            path = home_directory + str(year) + "/" + 'PERSON' + ".CSV"
+            p_df = pd.read_csv(path, encoding='iso-8859-1')
+            path = home_directory + str(year) + "/" + 'VEHICLE' + ".CSV"
+            v_df = pd.read_csv(path, encoding='iso-8859-1')
+
+            # adding total person count in accident
+            p_df['person_count'] = 1
+            p_count = p_df.groupby(['ST_CASE'])['person_count'].sum()
+            a_df['person_count'] = p_count
+
+            speeding = v_df.query('SPEEDREL > 0 and SPEEDREL < 8').groupby('ST_CASE')['SPEEDREL'].count()
+            a_df['SPEEDREL'] = speeding
+
+            licence = v_df.query('L_STATUS != 6').groupby('ST_CASE')['L_STATUS'].count()
+            a_df['L_STATUS'] = licence
+            path = home_directory + str(year) + "/" + 'ACCIDENT_n' + ".CSV"
+            a_df.to_csv(path)
+            #
+            print(a_df.shape)
+
     @staticmethod
     def calculate_response_times(dataFrame, file_name, year):
         """
