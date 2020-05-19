@@ -20,7 +20,7 @@ class ChecklistFilterAttributes:
                 value=[],
                 persistence='persisted',
                 labelStyle={'display': 'inline-block'},
-                style={'marginTop': '-15px',
-                       'marginLeft': '10px', 'marginRight': '10px'}
+                style={'marginTop': '-3px',
+                       'marginLeft': '10px', 'marginRight': '10px', 'lineHeight': '0.75'}
             )
         ])
