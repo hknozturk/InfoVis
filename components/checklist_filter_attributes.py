@@ -14,7 +14,7 @@ class ChecklistFilterAttributes:
                 options=[
                     {'label': 'Speeding', 'value': 'SPEEDREL'},
                     {'label': 'Drinking', 'value': 'DRUNK_DR'},
-                    {'label': 'Driver License', 'value': 'L_TYPE'}
+                    {'label': 'Invalid Driver License', 'value': 'L_STATUS'}
                 ],
                 value=[],
                 persistence='persisted',

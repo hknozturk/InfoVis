@@ -100,6 +100,8 @@ class DataProcessing:
             # self.filter_person_df = self.filter_columns(self.filter_person_df, 'DAY_WEEK', days)
         if 'DRUNK_DR' in f_values:
             self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'DRUNK_DR')
+        if 'L_STATUS' in f_values:
+            self.filter_accident_df = self.filter_columns_on_condition(self.filter_accident_df, 'L_STATUS')
 
     def get_years_timeline(self):
         """
@@ -173,7 +175,7 @@ class DataProcessing:
             return grouped_data['FATALS'].sum()
 
     @staticmethod
-    def read_data(file_name, years=[2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
+    def read_data(file_name, years=[2018, 2017]):#, 2016, 2015, 2014, 2013, 2012, 2011, 2010]):
         """
         reading data from local storage for years in years list.
         :param years: List of years to read from local file system.
